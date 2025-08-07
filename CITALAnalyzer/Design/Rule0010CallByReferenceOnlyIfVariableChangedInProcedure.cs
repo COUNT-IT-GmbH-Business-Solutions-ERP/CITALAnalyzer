@@ -1,0 +1,117 @@
+using System.Collections.Immutable;
+using Microsoft.Dynamics.Nav.CodeAnalysis;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace CITALAnalyzer.Design;
+
+[DiagnosticAnalyzer]
+public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : DiagnosticAnalyzer
+{
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
+        = ImmutableArray.Create(DiagnosticDescriptors.Rule0010CallByReferenceOnlyIfVariableChangedInProcedure);
+
+    public override void Initialize(AnalysisContext context)
+    {
+        context.RegisterCodeBlockAction(AnalyzeMethodParametersPassedByReference);
+    }
+
+    private void AnalyzeMethodParametersPassedByReference(CodeBlockAnalysisContext context)
+    {
+        if (context.CodeBlock is not MethodDeclarationSyntax methodSyntax)
+            return;
+
+        if (methodSyntax.ParameterList == null || methodSyntax.ParameterList.Parameters.Count == 0)
+            return;
+
+        var semanticModel = context.SemanticModel;
+        var cancellationToken = context.CancellationToken;
+
+        // Collect var parameters
+        var varParameters = new Dictionary<ISymbol, ParameterSyntax>();
+        foreach (var parameter in methodSyntax.ParameterList.Parameters)
+        {
+            if (parameter.VarKeyword == default)
+                continue;
+
+            var symbol = semanticModel.GetDeclaredSymbol(parameter, cancellationToken);
+            if (symbol is not null)
+                varParameters[symbol] = parameter;
+        }
+
+        if (varParameters.Count == 0)
+            return;
+
+        var modifiedSymbols = new HashSet<ISymbol>();
+
+        foreach (var node in methodSyntax.DescendantNodes())
+        {
+            // Check assignments like Customer."Name 2" := ...
+            if (node is AssignmentStatementSyntax assignment)
+            {
+                var targetExpr = assignment.Target;
+
+                if (targetExpr is MemberAccessExpressionSyntax memberAccess &&
+                    memberAccess.Expression is IdentifierNameSyntax rootId2)
+                {
+                    var rootSymbol = semanticModel.GetSymbolInfo(rootId2, cancellationToken).Symbol;
+                    if (rootSymbol != null && varParameters.ContainsKey(rootSymbol))
+                        modifiedSymbols.Add(rootSymbol);
+                }
+                else if (targetExpr is IdentifierNameSyntax targetId)
+                {
+                    var symbol = semanticModel.GetSymbolInfo(targetId, cancellationToken).Symbol;
+                    if (symbol != null && varParameters.ContainsKey(symbol))
+                        modifiedSymbols.Add(symbol);
+                }
+            }
+
+            // Check method calls like Customer.Modify()
+            if (node is InvocationExpressionSyntax invocation &&
+                invocation.Expression is MemberAccessExpressionSyntax memberAccessExpr &&
+                memberAccessExpr.Expression is IdentifierNameSyntax rootId)
+            {
+                var rootSymbol = semanticModel.GetSymbolInfo(rootId, cancellationToken).Symbol;
+                if (rootSymbol != null && varParameters.ContainsKey(rootSymbol))
+                    modifiedSymbols.Add(rootSymbol);
+            }
+        }
+
+        // Get all leading comments from the method declaration (leading trivia)
+        var leadingComments = methodSyntax.GetLeadingTrivia()
+            .Where(trivia =>
+                trivia.IsKind(SyntaxKind.LineCommentTrivia) ||
+                trivia.IsKind(SyntaxKind.MultiLineDocumentationCommentTrivia) ||
+                trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia) ||
+                trivia.IsKind(SyntaxKind.CommentTrivia) ||
+                trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia))
+            .Select(trivia => trivia.ToString().ToLowerInvariant())
+            .ToList();
+
+        foreach (var kvp in varParameters)
+        {
+            var parameterSyntax = kvp.Value;
+            if (parameterSyntax == null)
+                continue;
+
+            var parameterName = parameterSyntax.Name?.Identifier.ValueText;
+            if (string.IsNullOrEmpty(parameterName))
+                continue;
+
+            parameterName = parameterName.ToLowerInvariant();
+
+            bool hasFilterComment = leadingComments.Any(comment =>
+                (comment.Contains("filter") || comment.Contains("filtered")) &&
+                comment.Contains(parameterName));
+
+            if (!modifiedSymbols.Contains(kvp.Key) && !hasFilterComment)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    DiagnosticDescriptors.Rule0010CallByReferenceOnlyIfVariableChangedInProcedure,
+                    parameterSyntax.GetLocation()));
+            }
+        }
+    }
+}

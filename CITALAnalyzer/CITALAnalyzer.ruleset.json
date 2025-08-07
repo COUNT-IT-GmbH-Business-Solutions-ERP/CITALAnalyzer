@@ -1,0 +1,56 @@
+{
+  "name": "CITALAnalyzerRuleset",
+  "description": "Name of Variables must not contain a prefex except it is necessary for avoiding conflicts.",
+  "rules": [
+    {
+      "id": "LC0001",
+      "action": "Warning",
+      "justification": "Do not use an Object ID for properties or variable declarations."
+    },
+    {
+      "id": "LC0002",
+      "action": "Warning",
+      "justification": "Caption is missing."
+    },
+    {
+      "id": "LC0003",
+      "action": "Info",
+      "justification": "DataClassification is explicitly set to 'CustomerContent', the default value and therefore unnecessary."
+    },
+    {
+      "id": "LC0004",
+      "action": "Warning",
+      "justification": "The name of the event subscriber must match the name of the event it subscribes to."
+    },
+    {
+      "id": "LC0005",
+      "action": "Warning",
+      "justification": "An event subscriber should only receive the parameters it actually needs. In case of subscribing to a specific element, add the name of the element before the eventname and seperate them by using '_'."
+    },
+    {
+      "id": "LC0006",
+      "action": "Info",
+      "justification": "Empty Captions should be Locked."
+    },
+    {
+      "id": "LC0007",
+      "action": "Warning",
+      "justification": "Variables must contain the name of the AL object but no speical characters or whitespaces"
+    },
+    {
+      "id": "LC0008",
+      "action": "Warning",
+      "justification": "EventSubscribers must always be placed in a Codeunit that has the same name as the object to which the event belongs."
+    },
+    {
+      "id": "LC0009",
+      "action": "Warning",
+      "justification": "It is not allowed to use 'addbefore', 'addafter', 'movebefore' or 'moveafter' in Page Extensions."
+    },
+    {
+      "id": "LC0010",
+      "action": "Warning",
+      "justification": "Call by reference may only be used if the variable is modified within the procedure."
+    }
+  ]
+}
