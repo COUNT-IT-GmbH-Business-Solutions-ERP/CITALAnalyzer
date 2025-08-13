@@ -1,12 +1,8 @@
 ﻿using CITALAnalyzer.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
-using Microsoft.Dynamics.Nav.CodeAnalysis.Symbols;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
-using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
-using Newtonsoft.Json.Linq;
 using System.Collections.Immutable;
-using System.Text.RegularExpressions;
 
 // CIG0009 - Kein "addbefore", "addafter", "movebefore" & "moveafter"
 // "It is not allowed to use “addbefore”, “addafter”, “movebefore” or “moveafter” in PageExtensions"

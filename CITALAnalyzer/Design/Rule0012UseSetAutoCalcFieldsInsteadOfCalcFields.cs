@@ -1,10 +1,7 @@
 using CITALAnalyzer.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
-using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 // CIGP0002 - SetAutoCalcFields vs. CalcFields
 // "Always use SetAutoCalcFields instead of CalcFields."

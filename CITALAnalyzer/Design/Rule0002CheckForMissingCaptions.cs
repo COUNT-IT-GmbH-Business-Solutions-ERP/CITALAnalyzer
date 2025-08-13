@@ -2,7 +2,6 @@
 using CITALAnalyzer.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
-using Microsoft.Dynamics.Nav.CodeAnalysis.Symbols;
 
 // CIG0002 - Table Field Captions
 // "Captions must always be defined for table fields, even if the field name is the same as the caption."

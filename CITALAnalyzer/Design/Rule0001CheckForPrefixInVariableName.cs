@@ -2,16 +2,12 @@
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Symbols;
-using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
 using System.Collections.Immutable;
-using System.Text.RegularExpressions;
 
 // CIG0001 - Variable Name Prefix
 // "Variable names must not contain a prefix unless to avoid naming conflicts."
 
 // Prefix = 3 Uppercase letters at the beginning of the variable name
-
-// TODO: needs to be tested with multiple apps (more than one possible prefix)
 
 namespace CITALAnalyzer.Design;
 
@@ -21,8 +17,8 @@ public class Rule0001CheckForPrefixInVariableName : DiagnosticAnalyzer
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
             ImmutableArray.Create(DiagnosticDescriptors.Rule0001CheckForPrefixInVariableName);
 
-   public override void Initialize(AnalysisContext ctx) =>
-       ctx.RegisterSymbolAction(new Action<SymbolAnalysisContext>(this.CheckVariablePrefix), 
+   public override void Initialize(AnalysisContext context) =>
+       context.RegisterSymbolAction(new Action<SymbolAnalysisContext>(this.CheckVariablePrefix), 
            SymbolKind.GlobalVariable, 
            SymbolKind.LocalVariable);
 

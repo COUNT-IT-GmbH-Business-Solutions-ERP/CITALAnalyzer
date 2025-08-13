@@ -2,8 +2,6 @@ using System.Collections.Immutable;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
-using System.Linq;
-using System.Collections.Generic;
 
 // Editing CIG0010 ‐ call by reference, only when modifying variable
 // "Call by reference may only be used if the variable is modified within the procedure."

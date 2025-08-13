@@ -3,7 +3,6 @@ using CITALAnalyzer.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Symbols;
-using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
 
 // CIG0007 - Variable Naming
 // "Names of variables must always include the AL object and must not contain special characters."

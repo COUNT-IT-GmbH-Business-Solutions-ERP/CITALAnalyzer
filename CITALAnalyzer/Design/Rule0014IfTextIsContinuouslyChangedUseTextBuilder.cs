@@ -3,9 +3,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Symbols;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 // CIGP0004 – Text. Vs TextBuilder
 // "If a text is continuously changed, the data type TextBuilder must be used."
