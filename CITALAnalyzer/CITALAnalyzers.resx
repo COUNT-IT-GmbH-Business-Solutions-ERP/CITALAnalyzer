@@ -119,7 +119,7 @@
   </resheader>
   <data name="AnalyzerPrefix" xml:space="preserve">
   <!-- Prefix -->
-    <value>LC</value>
+    <value>CI</value>
   </data>
     <data name="Rule0001CheckForPrefixInVariableNameDescription" xml:space="preserve">
     <value>Name of Variables must not contain a prefex except it is necessary for avoiding conflicts.</value>
@@ -210,5 +210,51 @@
   </data>
   <data name="Rule0010CallByReferenceOnlyIfVariableChangedInProcedureDescription" xml:space="preserve">
     <value>Call by reference may only be used if the variable is modified within the procedure.</value>
+  </data>
+    <!--  #############################################################################################################   -->
+  <data name="Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsTitle" xml:space="preserve">
+    <value>SetLoadFields must always be used before fetching a record from the database.</value>
+  </data>
+  <data name="Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsFormat" xml:space="preserve">
+    <value>SetLoadFields must always be used before fetching a record from the database.</value>
+  </data>
+  <data name="Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsDescription" xml:space="preserve">
+    <value>SetLoadFields must always be used before fetching a record from the database.</value>
+  </data>
+    <data name="Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsTitle" xml:space="preserve">
+    <value>Always use SetAutoCalcFields instead of CalcFields.</value>
+  </data>
+  <data name="Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsFormat" xml:space="preserve">
+    <value>Always use SetAutoCalcFields instead of CalcFields.</value>
+  </data>
+  <data name="Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsDescription" xml:space="preserve">
+    <value>Always use SetAutoCalcFields instead of CalcFields.</value>
+  </data>
+    <data name="Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterTitle" xml:space="preserve">
+    <value>When calculating the sum of a field in a filter, CalcSums must always be used.</value>
+  </data>
+  <data name="Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterFormat" xml:space="preserve">
+    <value>When calculating the sum of a field in a filter, CalcSums must always be used.</value>
+  </data>
+  <data name="Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterDescription" xml:space="preserve">
+    <value>When calculating the sum of a field in a filter, CalcSums must always be used.</value>
+  </data>
+    <data name="Rule0014IfTextIsContinuouslyChangedUseTextBuilderTitle" xml:space="preserve">
+    <value>If a text is continuously changed, the data type TextBuilder must be used.</value>
+  </data>
+  <data name="Rule0014IfTextIsContinuouslyChangedUseTextBuilderFormat" xml:space="preserve">
+    <value>If a text is continuously changed, the data type TextBuilder must be used.</value>
+  </data>
+  <data name="Rule0014IfTextIsContinuouslyChangedUseTextBuilderDescription" xml:space="preserve">
+    <value>If a text is continuously changed, the data type TextBuilder must be used.</value>
+  </data>
+    <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldTitle" xml:space="preserve">
+    <value>"Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
+  </data>
+  <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldDescription" xml:space="preserve">
+    <value>"Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
+  </data>
+  <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldFormat" xml:space="preserve">
+    <value>"Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
   </data>
 </root>

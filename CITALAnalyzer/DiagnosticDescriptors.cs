@@ -66,7 +66,7 @@ public static class DiagnosticDescriptors
 
     public static readonly DiagnosticDescriptor Rule0007VariablesNameContainsALObjectAndNoSpecialChars = new(
         id: CITALAnalyzerAnalyzers.AnalyzerPrefix + "0007",
-        title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0007VariablesNameContainsALObjectAndNoSpecialChars"),
+        title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0007VariablesNameContainsALObjectAndNoSpecialCharsTitle"),
         messageFormat: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0007VariablesNameContainsALObjectAndNoSpecialCharsFormat"),
         category: "Design",
         defaultSeverity: DiagnosticSeverity.Warning,
@@ -76,7 +76,7 @@ public static class DiagnosticDescriptors
 
     public static readonly DiagnosticDescriptor Rule0008EventSubsInCorrectCodeunit = new(
         id: CITALAnalyzerAnalyzers.AnalyzerPrefix + "0008",
-        title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0008EventSubsInCorrectCodeunitChars"),
+        title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0008EventSubsInCorrectCodeunitTitle"),
         messageFormat: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0008EventSubsInCorrectCodeunitFormat"),
         category: "Design",
         defaultSeverity: DiagnosticSeverity.Warning,
@@ -102,6 +102,57 @@ public static class DiagnosticDescriptors
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         description: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0010CallByReferenceOnlyIfVariableChangedInProcedureDescription"),
+        helpLinkUri: "");
+    // ##################################################################################################################################
+
+    public static readonly DiagnosticDescriptor Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecords = new(
+        id: CITALAnalyzerAnalyzers.AnalyzerPrefix + "0011",
+        title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsTitle"),
+        messageFormat: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsFormat"),
+        category: "Design",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsDescription"),
+        helpLinkUri: "");
+
+    public static readonly DiagnosticDescriptor Rule0012UseSetAutoCalcFieldsInsteadOfCalcFields = new(
+        id: CITALAnalyzerAnalyzers.AnalyzerPrefix + "0012",
+        title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsTitle"),
+        messageFormat: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsFormat"),
+        category: "Design",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsDescription"),
+        helpLinkUri: "");
+
+    public static readonly DiagnosticDescriptor Rule0013UseCalcSumWhenCalculationSumOfFieldInFilter = new(
+        id: CITALAnalyzerAnalyzers.AnalyzerPrefix + "0013",
+        title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterTitle"),
+        messageFormat: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterFormat"),
+        category: "Design",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterDescription"),
+        helpLinkUri: "");
+
+    public static readonly DiagnosticDescriptor Rule0014IfTextIsContinuouslyChangedUseTextBuilder= new(
+        id: CITALAnalyzerAnalyzers.AnalyzerPrefix + "0014",
+        title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0014IfTextIsContinuouslyChangedUseTextBuilderTitle"),
+        messageFormat: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0014IfTextIsContinuouslyChangedUseTextBuilderFormat"),
+        category: "Design",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0014IfTextIsContinuouslyChangedUseTextBuilderDescription"),
+        helpLinkUri: "");
+
+    public static readonly DiagnosticDescriptor Rule0015DefineProcedureAsSourceExpressionInPageField = new(
+        id: CITALAnalyzerAnalyzers.AnalyzerPrefix + "0015",
+        title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0015DefineProcedureAsSourceExpressionInPageFieldTitle"),
+        messageFormat: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0015DefineProcedureAsSourceExpressionInPageFieldFormat"),
+        category: "Design",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0015DefineProcedureAsSourceExpressionInPageFieldDescription"),
         helpLinkUri: "");
 
 }
