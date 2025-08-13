@@ -29,7 +29,7 @@ public static class DiagnosticDescriptors
         title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0003CheckIfDefaultDataClassificationTitle"),
         messageFormat: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0003CheckIfDefaultDataClassificationFormat"),
         category: "Design",
-        defaultSeverity: DiagnosticSeverity.Info,
+        defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         description: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0003CheckIfDefaultDataClassificationDescription"),
         helpLinkUri: "");
@@ -59,7 +59,7 @@ public static class DiagnosticDescriptors
         title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0006EmptyCaptionLockedTitle"),
         messageFormat: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0006EmptyCaptionLockedFormat"),
         category: "Design",
-        defaultSeverity: DiagnosticSeverity.Info,
+        defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
         description: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0006EmptyCaptionLockedDescription"),
         helpLinkUri: "");

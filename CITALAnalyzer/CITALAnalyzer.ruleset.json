@@ -14,7 +14,7 @@
     },
     {
       "id": "CI0003",
-      "action": "Info",
+      "action": "Warning",
       "justification": "DataClassification is explicitly set to 'CustomerContent', the default value and therefore unnecessary."
     },
     {
@@ -29,7 +29,7 @@
     },
     {
       "id": "CI0006",
-      "action": "Info",
+      "action": "Warning",
       "justification": "Empty Captions should be Locked."
     },
     {
