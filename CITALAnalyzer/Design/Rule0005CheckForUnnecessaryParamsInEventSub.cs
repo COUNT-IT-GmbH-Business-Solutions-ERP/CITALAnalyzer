@@ -16,12 +16,12 @@ public class Rule0005CheckForUnnecessaryParamsInEventSub : DiagnosticAnalyzer
 
     public override void Initialize(AnalysisContext context)
     {
-        context.RegisterCodeBlockAction(AnalyzeEventSubscriberForUnusedParameters);
+        context.RegisterCodeBlockAction(new Action<CodeBlockAnalysisContext>(AnalyzeEventSubscriberForUnusedParameters));
     }
 
-    private void AnalyzeEventSubscriberForUnusedParameters(CodeBlockAnalysisContext context)
+    private void AnalyzeEventSubscriberForUnusedParameters(CodeBlockAnalysisContext ctx)
     {
-        if (context.CodeBlock is not MethodDeclarationSyntax methodSyntax)
+        if (ctx.CodeBlock is not MethodDeclarationSyntax methodSyntax)
             return;
 
         var eventSubscriberAttribute = methodSyntax.Attributes
@@ -51,7 +51,7 @@ public class Rule0005CheckForUnnecessaryParamsInEventSub : DiagnosticAnalyzer
                 if (parameter is null)
                     continue; 
 
-                context.ReportDiagnostic(Diagnostic.Create(
+                ctx.ReportDiagnostic(Diagnostic.Create(
                     DiagnosticDescriptors.Rule0005CheckForUnnecessaryParamsInEventSub,
                     parameter.GetLocation(),
                     parameterName));

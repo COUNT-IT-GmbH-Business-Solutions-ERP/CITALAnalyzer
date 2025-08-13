@@ -22,18 +22,18 @@ public class Rule0002CheckForMissingCaptions : DiagnosticAnalyzer
         => context.RegisterSymbolAction(new Action<SymbolAnalysisContext>(this.CheckForMissingCaptions), SymbolKind.Field
         );
 
-    private void CheckForMissingCaptions(SymbolAnalysisContext context)
+    private void CheckForMissingCaptions(SymbolAnalysisContext ctx)
     {
-        if (context.IsObsoletePendingOrRemoved() || context.Symbol is not IFieldSymbol field)
+        if (ctx.IsObsoletePendingOrRemoved() || ctx.Symbol is not IFieldSymbol field)
             return;
 
         IApplicationObjectTypeSymbol? applicationObject = field.GetContainingApplicationObjectTypeSymbol();
         if (applicationObject is not ITableTypeSymbol || applicationObject.IsObsoletePendingOrRemoved() || field.ContainingSymbol is not ITableTypeSymbol table)
             return;
 
-        if (CaptionIsMissing(field, context))
+        if (CaptionIsMissing(field, ctx))
         {
-            RaiseCaptionWarning(context);
+            RaiseCaptionWarning(ctx);
         }
     }
 

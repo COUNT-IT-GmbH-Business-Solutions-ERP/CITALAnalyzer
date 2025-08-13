@@ -10,7 +10,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 namespace CITALAnalyzer.Design;
 
 [DiagnosticAnalyzer]
-public class Rule0004NameOfEventSubsriberHasToMatchEvent : DiagnosticAnalyzer
+public class Rule0004NameOfEventSubsrciberHasToMatchEvent : DiagnosticAnalyzer
 {
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; } =
         ImmutableArray.Create(DiagnosticDescriptors.Rule0004NameOfEventSubscriberHasToMatchEvent);

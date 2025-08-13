@@ -17,11 +17,11 @@ public class Rule0008EventSubsInCorrectCodeunit : DiagnosticAnalyzer
         ImmutableArray.Create(DiagnosticDescriptors.Rule0008EventSubsInCorrectCodeunit);
 
     public override void Initialize(AnalysisContext context) =>
-        context.RegisterSymbolAction(AnalyzeCodeunitForEventSubscribers, SymbolKind.Codeunit);
+        context.RegisterSymbolAction(new Action<SymbolAnalysisContext>(AnalyzeCodeunitForEventSubscribers), SymbolKind.Codeunit);
 
-    private void AnalyzeCodeunitForEventSubscribers(SymbolAnalysisContext context)
+    private void AnalyzeCodeunitForEventSubscribers(SymbolAnalysisContext ctx)
     {
-        if (context.Symbol is not ICodeunitTypeSymbol codeunitSymbol || context.IsObsoletePendingOrRemoved())
+        if (ctx.Symbol is not ICodeunitTypeSymbol codeunitSymbol || ctx.IsObsoletePendingOrRemoved())
             return;
 
         var eventPublisherNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -51,7 +51,7 @@ public class Rule0008EventSubsInCorrectCodeunit : DiagnosticAnalyzer
                 if (!member.IsEventSubscriber())
                     continue;
 
-                context.ReportDiagnostic(Diagnostic.Create(
+                ctx.ReportDiagnostic(Diagnostic.Create(
                     DiagnosticDescriptors.Rule0008EventSubsInCorrectCodeunit,
                     member.GetLocation(),
                     codeunitSymbol.Name));

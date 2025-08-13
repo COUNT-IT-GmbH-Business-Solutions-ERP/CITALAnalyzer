@@ -5,6 +5,9 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System.Linq;
 using System.Collections.Generic;
 
+// Editing CIG0010 ‐ call by reference, only when modifying variable
+// "Call by reference may only be used if the variable is modified within the procedure."
+
 namespace CITALAnalyzer.Design;
 
 [DiagnosticAnalyzer]
@@ -15,19 +18,19 @@ public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : Diagnosti
 
     public override void Initialize(AnalysisContext context)
     {
-        context.RegisterCodeBlockAction(AnalyzeMethodParametersPassedByReference);
+        context.RegisterCodeBlockAction(new Action<CodeBlockAnalysisContext>(AnalyzeMethodParametersPassedByReference));
     }
 
-    private void AnalyzeMethodParametersPassedByReference(CodeBlockAnalysisContext context)
+    private void AnalyzeMethodParametersPassedByReference(CodeBlockAnalysisContext ctx)
     {
-        if (context.CodeBlock is not MethodDeclarationSyntax methodSyntax)
+        if (ctx.CodeBlock is not MethodDeclarationSyntax methodSyntax)
             return;
 
         if (methodSyntax.ParameterList == null || methodSyntax.ParameterList.Parameters.Count == 0)
             return;
 
-        var semanticModel = context.SemanticModel;
-        var cancellationToken = context.CancellationToken;
+        var semanticModel = ctx.SemanticModel;
+        var cancellationToken = ctx.CancellationToken;
 
         // Collect var parameters
         var varParameters = new Dictionary<ISymbol, ParameterSyntax>();
@@ -68,7 +71,7 @@ public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : Diagnosti
                 }
             }
 
-            // Check method calls like Customer.Modify()
+            // Check method calls
             if (node is InvocationExpressionSyntax invocation &&
                 invocation.Expression is MemberAccessExpressionSyntax memberAccessExpr &&
                 memberAccessExpr.Expression is IdentifierNameSyntax rootId)
@@ -79,7 +82,7 @@ public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : Diagnosti
             }
         }
 
-        // Get all leading comments from the method declaration (leading trivia)
+        // for disabling rule via comment (eg. "filter has been set on param 'name'")
         var leadingComments = methodSyntax.GetLeadingTrivia()
             .Where(trivia =>
                 trivia.IsKind(SyntaxKind.LineCommentTrivia) ||
@@ -108,7 +111,7 @@ public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : Diagnosti
 
             if (!modifiedSymbols.Contains(kvp.Key) && !hasFilterComment)
             {
-                context.ReportDiagnostic(Diagnostic.Create(
+                ctx.ReportDiagnostic(Diagnostic.Create(
                     DiagnosticDescriptors.Rule0010CallByReferenceOnlyIfVariableChangedInProcedure,
                     parameterSyntax.GetLocation()));
             }
