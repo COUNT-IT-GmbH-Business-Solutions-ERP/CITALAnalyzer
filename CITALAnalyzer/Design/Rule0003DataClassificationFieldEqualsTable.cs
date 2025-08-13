@@ -7,8 +7,6 @@ using System.Text.Json;
 // CIG0003 - DataClassification
 // "Omit DataClassification, except for AppSource or when it is explicitly required."
 
-// TODO: needs to be tested in context of appsource apps
-
 namespace CITALAnalyzer.Design;
 
 [DiagnosticAnalyzer]
@@ -28,7 +26,7 @@ public class Rule0003CheckIfDefaultDataClassification : DiagnosticAnalyzer
         if (ctx.IsObsoletePendingOrRemoved())
             return;
 
-        if (IsAppSourceApp(ctx.Options, ctx.CancellationToken))
+        if (IsAppSourceApp(ctx))
             return;
 
         if (ctx.Symbol is not IFieldSymbol && ctx.Symbol is not ITableTypeSymbol)
@@ -38,7 +36,7 @@ public class Rule0003CheckIfDefaultDataClassification : DiagnosticAnalyzer
         if (dataClassification is null)
             return;
 
-        if (dataClassification.ValueText == "CustomerContent")
+        if (string.Equals(dataClassification.ValueText, "CustomerContent", StringComparison.Ordinal))
         {
             ctx.ReportDiagnostic(Diagnostic.Create(
                 DiagnosticDescriptors.Rule0003CheckIfDefaultDataClassification,
@@ -46,33 +44,39 @@ public class Rule0003CheckIfDefaultDataClassification : DiagnosticAnalyzer
         }
     }
 
-    private bool IsAppSourceApp(AnalyzerOptions options, CancellationToken cancellationToken)
+    private static bool IsAppSourceApp(SymbolAnalysisContext ctx)
     {
-        foreach (var additionalFile in options.AdditionalFiles)
+        var treePath = ctx.Compilation?.SyntaxTrees.FirstOrDefault()?.FilePath;
+        if (string.IsNullOrEmpty(treePath))
+            return false;
+
+        var dir = Path.GetDirectoryName(treePath);
+        while (!string.IsNullOrEmpty(dir))
         {
-            var path = additionalFile.Path.Replace("\\", "/");
+            var settings = Path.Combine(dir, ".github", "AL-Go-Settings.json");
+            if (File.Exists(settings))
+                return IsAppSourceType(settings);
 
-            if (path.EndsWith("/.github/AL-Go-Settings.json", StringComparison.OrdinalIgnoreCase))
+            dir = Path.GetDirectoryName(dir);
+        }
+
+        return false;
+    }
+
+    private static bool IsAppSourceType(string settingsPath)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(File.ReadAllText(settingsPath));
+            var root = doc.RootElement;
+            if (root.TryGetProperty("type", out var typeProp))
             {
-                var text = additionalFile.GetText(cancellationToken);
-                if (text == null)
-                    continue;
-
-                try
-                {
-                    using var jsonDoc = JsonDocument.Parse(text.ToString());
-                    if (jsonDoc.RootElement.TryGetProperty("type", out var typeProperty))
-                    {
-                        string typeValue = typeProperty.GetString() ?? "";
-                        return typeValue.Equals("AppSource App", StringComparison.OrdinalIgnoreCase);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // Invalid JSON – treat as non-AppSource
-                }
+                var val = typeProp.GetString() ?? string.Empty;
+                return val.Equals("AppSource App", System.StringComparison.OrdinalIgnoreCase);
             }
         }
+        catch (IOException) { /* treat as non-AppSource */ }
+        catch (JsonException) { /* treat as non-AppSource */ }
 
         return false;
     }
