@@ -17,7 +17,14 @@ Some rules can be configured by adding a file named `CITALAnalyzer.json` in the 
 
 3. In `CITALAnalyzer/DiagnosticDescriptors`, copy a rule block and modify the values (id, title, messageFormat, category, defaultSeverity, isEnabledByDefault, description, helpLinkUri).
 
-4. In `CITALAnalyzer/Design/`, create a new `.cs` file where the logical part of the rule check will be implemented.
+4. In `CITALAnalyzer/Design/`, create a new `.cs` file where the logical part of the rule check will be implemented. 
+
+    - In this new file create a new class that needs to be derived from the DiagnosticAnalyzer Class and name it after the rule you want to implement. 
+    - Here you need to make the implementation of the abstract methods *SupportedDiagnostics* and *Initialize*. 
+    
+        The Initialize Method sets the context under which the rule should be checked. In the Initialize method you need to register an action with your specified action calling the method that does the rule checking and optionally restrict the context you want to look for (like tables, fields, specific Syntax,...).
+
+        To see the different kinds of register methods check out the AnalysisContext Class.
 
 
 ## Can I disable certain rules?
@@ -42,6 +49,11 @@ https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/develope
 |[CI0008](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIG0008-%E2%80%90-EventSub-File-Name)|Event subscribers must always be placed in a codeunit that has the same name as the object to which the event belongs.|Warning|
 |[CI0009](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIG0009-%E2%80%90-no-addbefore%22,-%22addafter%22,-%22movebefore%22-&-%22moveafter)|It is not allowed to use “addbefore”, “addafter”, “movebefore” or “moveafter” in PageExtensions|Warning|
 |[CI0010](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIG0010-%E2%80%90-call-by-reference,-only-when-modifying-variable)|Call by reference may only be used if the variable is modified within the procedure.|Warning|
+|[CI0011](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIGP0001-%E2%80%90-SetLoadFields)|SetLoadFields must always be used before fetching a record from the database.|Warning|
+|[CI0012](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIGP0002-%E2%80%90-SetAutoCalcFields-vs.-CalcFields)|Always use SetAutoCalcFields instead of CalcFields.|Warning|
+|[CI0013](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIGP0003-%E2%80%93-CalcSums-vs.-Loop)|When calculating the sum of a field in a filter, CalcSums must always be used.|Warning|
+|[CI0014](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIGP0004-%E2%80%93-Text.-Vs-TextBuilder)|If a text is continuously changed, the data type TextBuilder must be used.|Warning|
+|[CI0015](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIGP0005-%E2%80%93-Prozdeuren-als-Source-Expression-verwenden)|Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().|Warning|
 
 ## Codespace
 
@@ -66,6 +78,12 @@ Copy the following required DLL dependencies into the project folder:
 - `Microsoft.Dynamics.Analyzer.Common.dll`
 - `Microsoft.Dynamics.Nav.CodeAnalysis.dll`
 - `Microsoft.Dynamics.Nav.CodeAnalysis.Workspace.dll`
+
+You can find them here: 
+
+C:\Users\\\<YourUser>\\.vscode\extensions\ms-dynamics-smb.al-\<version>\bin\Analyzers
+
+Note: After an update of Business Central these files need to be replaced with the new ones. Just replace the files in the lib folder with the ones in the Analyzers folder.
 
 #### 4. Build the Project
 
@@ -101,12 +119,35 @@ Add the DLL to the AL Code Analyzer settings by modifying your AL settings JSON 
 
 Reload or restart Visual Studio Code to apply the changes. Your custom analyzer should now be active and running alongside the built-in analyzers.
 
-### Common errors
+### Common errors & tips and tricks
 
-### see for more detailed information
+#### choosing the right RegisterAction
 
-e.g. Debugging, pipeline integration, testing, other rules,...
+Depending on the needed abstraction level you have to choose a fitting Registration method.
+Register methods that are used quite often are:
+
+- RegisterSymbolAction (checks for SymbolKind). It operates on semantic level. E.g. for checking if the symbol at hand is a GlobalVariable
+    - see enum SymbolKind for possible matches.
+
+- RegisterSyntaxNodeActions (checks for SyntaxKind). This one operates on the elevel of syntax. It walks throught the syntax tree and analyzes if your specified kind of SyntaxNode matches. E.g. for checking if I am currently checking something inside a PageObject.
+    - see enum SynatxKind for possible matches.
+
+- RegisterCodeBlockAction. For Analyzing the content of an entire codeblock.
+
+You can find other RegistrationMethods in the class AnalysisContext
+
+### Helpfull links and repositories
+
+Learn more about e.g. Debugging, pipeline integration, testing, other rules,...
+
+Repo: LinterCop AL Analyzer by Stefan Maron
 
 https://github.com/StefanMaron/BusinessCentral.LinterCop
 
+Repo: CompanialCop by Companial
 
+https://github.com/Companial/CompanialCop
+
+Video: "A guide to Using Custom Code Analysis" presented by Tine Staric
+
+https://www.youtube.com/watch?v=U0W1MhNNwWI
