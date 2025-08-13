@@ -3,6 +3,11 @@
   "description": "Name of Variables must not contain a prefex except it is necessary for avoiding conflicts.",
   "rules": [
     {
+      "id": "CI0000",
+      "action": "Warning",
+      "justification": "Namespace should follow the pattern 'CIG.ProductName.Area.Feature'."
+    },
+    {
       "id": "CI0001",
       "action": "Warning",
       "justification": "Do not use an Object ID for properties or variable declarations."
