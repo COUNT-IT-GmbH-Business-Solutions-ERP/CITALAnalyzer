@@ -122,24 +122,6 @@
     <value>CI</value>
   </data>
   <!-- Rules -->
-  <data name="Rule0000CheckNamespaceStructureDescription" xml:space="preserve">
-    <value>Namespace should follow the pattern 'CIG.ProductName.Area.Feature'</value>
-  </data>
-  <data name="Rule0000CheckNamespaceStructureFormat" xml:space="preserve">
-    <value>Namespace should follow the pattern 'CIG.ProductName.Area.Feature'</value>
-  </data>
-  <data name="Rule0000CheckNamespaceStructureTitle" xml:space="preserve">
-    <value>Namespace should follow the pattern 'CIG.ProductName.Area.Feature'</value>
-  </data>
-  <data name="Rule0001CheckForPrefixInVariableNameDescription" xml:space="preserve">
-    <value>Name of Variables must not contain a prefex except it is necessary for avoiding conflicts.</value>
-  </data>
-  <data name="Rule0001CheckForPrefixInVariableNameFormat" xml:space="preserve">
-    <value>Name of Variables must not contain a prefex except it is necessary for avoiding conflicts.</value>
-  </data>
-  <data name="Rule0001CheckForPrefixInVariableNameTitle" xml:space="preserve">
-    <value>Name of Variables must not contain a prefex except it is necessary for avoiding conflicts.</value>
-  </data>
   <data name="Rule0002CheckForMissingCaptionsDescription" xml:space="preserve">
     <value>Caption is missing.</value>
   </data>

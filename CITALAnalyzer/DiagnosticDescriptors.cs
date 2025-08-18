@@ -4,26 +4,6 @@ namespace CITALAnalyzer;
 
 public static class DiagnosticDescriptors
 {
-    public static readonly DiagnosticDescriptor Rule0000CheckNamespaceStructure = new(
-        id: CITALAnalyzerAnalyzers.AnalyzerPrefix + "0000",
-        title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0000CheckNamespaceStructureTitle"),
-        messageFormat: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0000CheckNamespaceStructureFormat"),
-        category: "Design",
-        defaultSeverity: DiagnosticSeverity.Warning,
-        isEnabledByDefault: true,
-        description: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0000CheckNamespaceStructureDescription"),
-        helpLinkUri: "");
-
-    public static readonly DiagnosticDescriptor Rule0001CheckForPrefixInVariableName = new(
-        id: CITALAnalyzerAnalyzers.AnalyzerPrefix + "0001",
-        title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0001CheckForPrefixInVariableNameTitle"),
-        messageFormat: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0001CheckForPrefixInVariableNameFormat"),
-        category: "Design",
-        defaultSeverity: DiagnosticSeverity.Warning,
-        isEnabledByDefault: true,
-        description: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0001CheckForPrefixInVariableNameDescription"),
-        helpLinkUri: "");
-
     public static readonly DiagnosticDescriptor Rule0002CheckForMissingCaptions = new(
         id: CITALAnalyzerAnalyzers.AnalyzerPrefix + "0002",
         title: CITALAnalyzerAnalyzers.GetLocalizableString("Rule0002CheckForMissingCaptionsTitle"),
