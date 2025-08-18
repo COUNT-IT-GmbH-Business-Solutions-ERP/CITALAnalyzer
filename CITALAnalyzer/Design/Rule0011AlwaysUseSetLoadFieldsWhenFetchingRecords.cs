@@ -7,6 +7,8 @@ using System.Collections.Immutable;
 // CIGP0001 - SetLoadFields
 // "SetLoadFields must always be used before fetching a record from the database."
 
+// which methods should use a setLoadFields before they are used?
+
 namespace CITALAnalyzer.Design
 {
     [DiagnosticAnalyzer]

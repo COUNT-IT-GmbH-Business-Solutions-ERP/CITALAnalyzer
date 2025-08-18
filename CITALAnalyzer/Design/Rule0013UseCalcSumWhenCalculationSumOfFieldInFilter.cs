@@ -15,9 +15,6 @@ public class Rule0013UseCalcSumWhenCalculationSumOfFieldInFilter : DiagnosticAna
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
         = ImmutableArray.Create(DiagnosticDescriptors.Rule0013UseCalcSumWhenCalculationSumOfFieldInFilter);
 
-    //private static readonly HashSet<string> FilterMethods = new(StringComparer.OrdinalIgnoreCase)
-    //    { "SetRange", "SetFilter", "CopyFilters", "SetView" };
-
     public override void Initialize(AnalysisContext context) =>
         context.RegisterCodeBlockAction(new Action<CodeBlockAnalysisContext>(AnalyzeMethod));
 

@@ -6,6 +6,8 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 // Editing CIG0010 ‐ call by reference, only when modifying variable
 // "Call by reference may only be used if the variable is modified within the procedure."
 
+// can be disabled by using a comment with the name of the variable and the word filter
+
 namespace CITALAnalyzer.Design;
 
 [DiagnosticAnalyzer]
@@ -103,6 +105,7 @@ public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : Diagnosti
 
             parameterName = parameterName.ToLowerInvariant();
 
+            // checks for keywords that deactive rule
             bool hasFilterComment = leadingComments.Any(comment =>
                 (comment.Contains("filter") || comment.Contains("filtered")) &&
                 comment.Contains(parameterName));
