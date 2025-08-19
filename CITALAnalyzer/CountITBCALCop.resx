@@ -132,7 +132,7 @@
     <value>Project structure is not following official conventions (Azure DevOps).</value>
   </data>
   <data name="Rule0002CheckForMissingCaptionsDescription" xml:space="preserve">
-    <value>Caption is missing.</value>s
+    <value>Caption is missing.</value>
   </data>
   <data name="Rule0002CheckForMissingCaptionsFormat" xml:space="preserve">
     <value>Caption is missing.</value>
@@ -150,40 +150,40 @@
     <value>Data Classification is equal to the default value. Remove to reduce redundancy.</value>
   </data>
   <data name="Rule0004NameOfEventSubscriberHasToMatchEventDescription" xml:space="preserve">
-    <value>The name of the event subscriber must match the name of the event it subscribes to. In case of subscribing to a specific element, add the name of the element before the eventname and seperate them by using '_'.</value>
+    <value>The name of the event subscriber must match the name of the event it subscribes to. In case of subscribing to a specific element, add the name of the element before the eventname and separate them by using '_'.</value>
   </data>
   <data name="Rule0004NameOfEventSubscriberHasToMatchEventFormat" xml:space="preserve">
-    <value>The name of the event subscriber must match the name of the event it subscribes to. In case of subscribing to a specific element, add the name of the element before the eventname and seperate them by using '_'.</value>
+    <value>The name of the event subscriber must match the name of the event it subscribes to. In case of subscribing to a specific element, add the name of the element before the eventname and separate them by using '_'.</value>
   </data>
   <data name="Rule0004NameOfEventSubscriberHasToMatchEventTitle" xml:space="preserve">
-    <value>The name of the event subscriber must match the name of the event it subscribes to. In case of subscribing to a specific element, add the name of the element before the eventname and seperate them by using '_'.</value>
+    <value>The name of the event subscriber must match the name of the event it subscribes to. In case of subscribing to a specific element, add the name of the element before the eventname and separate them by using '_'.</value>
   </data>
   <data name="Rule0005CheckForUnnecessaryParamsInEventSubDescription" xml:space="preserve">
-    <value>An event subscriber should only receive the parameters it actually needs.</value>
+    <value>An event subscriber must only receive the parameters it actually needs.</value>
   </data>
   <data name="Rule0005CheckForUnnecessaryParamsInEventSubFormat" xml:space="preserve">
-    <value>An event subscriber should only receive the parameters it actually needs.</value>
+    <value>An event subscriber must only receive the parameters it actually needs.</value>
   </data>
   <data name="Rule0005CheckForUnnecessaryParamsInEventSubTitle" xml:space="preserve">
-    <value>An event subscriber should only receive the parameters it actually needs.</value>
+    <value>An event subscriber must only receive the parameters it actually needs.</value>
   </data>
   <data name="Rule0006EmptyCaptionLockedTitle" xml:space="preserve">
-    <value>Empty captions should be locked.</value>
+    <value>Empty captions must be locked.</value>
   </data>
   <data name="Rule0006EmptyCaptionLockedFormat" xml:space="preserve">
-    <value>Empty captions should be locked.</value>
+    <value>Empty captions must be locked.</value>
   </data>
   <data name="Rule0006EmptyCaptionLockedDescription" xml:space="preserve">
-    <value>Empty captions should be locked.</value>
+    <value>Empty captions must be locked.</value>
   </data>
   <data name="Rule0007VariablesNameContainsALObjectAndNoSpecialCharsTitle" xml:space="preserve">
-    <value>Variables must contain the name of the AL object but no speical characters or whitespaces.</value>
+    <value>Variables must contain the name of the AL object but no special characters or whitespaces.</value>
   </data>
   <data name="Rule0007VariablesNameContainsALObjectAndNoSpecialCharsFormat" xml:space="preserve">
-    <value>Variables must contain the name of the AL object but no speical characters or whitespaces.</value>
+    <value>Variables must contain the name of the AL object but no special characters or whitespaces.</value>
   </data>
   <data name="Rule0007VariablesNameContainsALObjectAndNoSpecialCharsDescription" xml:space="preserve">
-    <value>Variables must contain the name of the AL object but no speical characters or whitespaces.</value>
+    <value>Variables must contain the name of the AL object but no special characters or whitespaces.</value>
   </data>
   <data name="Rule0008EventSubsInCorrectCodeunitTitle" xml:space="preserve">
     <value>EventSubscribers must always be placed in a Codeunit that has the same name as the object to which the event belongs.</value>
@@ -212,7 +212,6 @@
   <data name="Rule0010CallByReferenceOnlyIfVariableChangedInProcedureDescription" xml:space="preserve">
     <value>Call by reference may only be used if the variable is modified within the procedure.</value>
   </data>
-    <!--  #############################################################################################################   -->
   <data name="Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsTitle" xml:space="preserve">
     <value>SetLoadFields must always be used before fetching a record from the database.</value>
   </data>
@@ -250,12 +249,12 @@
     <value>If a text is continuously changed, the data type TextBuilder must be used.</value>
   </data>
     <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldTitle" xml:space="preserve">
-    <value>"Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
+    <value>Procedures must be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
   </data>
   <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldDescription" xml:space="preserve">
-    <value>"Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
+    <value>Procedures must be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
   </data>
   <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldFormat" xml:space="preserve">
-    <value>"Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
+    <value>Procedures must be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
   </data>
 </root>
