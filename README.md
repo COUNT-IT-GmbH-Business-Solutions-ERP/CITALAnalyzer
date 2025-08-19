@@ -39,8 +39,6 @@ https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/develope
 
 |Id| Title|Default Severity|
 |---|---|---|
-|[CI0000](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/Rule0000-%E2%80%90-Namespace-Conventions)|Namespace should follow the pattern 'CIG.ProductName.Area.Feature'.|Warning|
-|[CI0001](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIG0001-%E2%80%90-Variable-Name-Prefix)|Variable names must not contain a prefix unless to avoid naming conflicts.|Warning|
 |[CI0002](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIG0002-%E2%80%90-Table-Field-Captions)|Captions must always be defined for table fields, even if the field name is the same as the caption.|Warning|
 |[CI0003](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIG0003-%E2%80%90-DataClassification)|Omit DataClassification, except for AppSource or when it is explicitly required.|Warning|
 |[CI0004](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIG0004-%E2%80%90-EventSub-Name)|The name of the event subscriber must match the name of the event it subscribes to.|Warning|

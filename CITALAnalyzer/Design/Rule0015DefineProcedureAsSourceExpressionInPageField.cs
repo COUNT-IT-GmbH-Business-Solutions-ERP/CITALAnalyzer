@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 // CIGP0005 - Prozdeuren als Source Expression verwenden
 // "Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord()."
 
-
+//
 // extend to procedure calls procedure
 
 namespace CITALAnalyzer.Design;

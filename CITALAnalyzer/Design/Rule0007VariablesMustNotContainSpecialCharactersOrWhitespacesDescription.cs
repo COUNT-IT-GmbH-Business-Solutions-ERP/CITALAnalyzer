@@ -9,6 +9,8 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Symbols;
 
 // Name of the AL Object is in this case the name without special characters or whitespaces
 
+// issue: cannto remove prefix properly because it is not standarized
+
 namespace CITALAnalyzer.Design;
 
 [DiagnosticAnalyzer]

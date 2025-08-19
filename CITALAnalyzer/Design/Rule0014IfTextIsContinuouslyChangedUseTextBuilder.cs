@@ -8,6 +8,8 @@ using System.Collections.Immutable;
 // CIGP0004 – Text. Vs TextBuilder
 // "If a text is continuously changed, the data type TextBuilder must be used."
 
+// add :=
+
 namespace CITALAnalyzer.Design;
 
 [DiagnosticAnalyzer]
