@@ -1,4 +1,4 @@
-using CITALAnalyzer.Helpers;
+using CountITBCALCop.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 // CIGP0002 - SetAutoCalcFields vs. CalcFields
 // "Always use SetAutoCalcFields instead of CalcFields."
 
-namespace CITALAnalyzer.Design;
+namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
 public class Rule0012UseSetAutoCalcFieldsInsteadOfCalcFields : DiagnosticAnalyzer

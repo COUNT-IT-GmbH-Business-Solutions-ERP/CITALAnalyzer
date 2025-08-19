@@ -8,7 +8,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 
 // can be disabled by using a comment with the name of the variable and the word filter
 
-namespace CITALAnalyzer.Design;
+namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
 public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : DiagnosticAnalyzer

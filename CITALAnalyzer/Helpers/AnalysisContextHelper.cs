@@ -1,7 +1,7 @@
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 
-namespace CITALAnalyzer.Helpers;
+namespace CountITBCALCop.Helpers;
 
 public static class AnalysisContextExtensions
 {

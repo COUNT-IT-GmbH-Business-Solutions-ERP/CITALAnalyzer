@@ -3,7 +3,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-namespace CITALAnalyzer.Helpers;
+namespace CountITBCALCop.Helpers;
 
 
 public class HelperFunctions

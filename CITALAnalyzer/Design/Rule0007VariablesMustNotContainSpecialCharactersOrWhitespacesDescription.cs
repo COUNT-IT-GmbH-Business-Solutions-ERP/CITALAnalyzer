@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using CITALAnalyzer.Helpers;
+using CountITBCALCop.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Symbols;
@@ -11,7 +11,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Symbols;
 
 // issue: cannto remove prefix properly because it is not standarized
 
-namespace CITALAnalyzer.Design;
+namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
 public class Rule0007VariablesNameContainsALObjectAndNoSpecialChars : DiagnosticAnalyzer

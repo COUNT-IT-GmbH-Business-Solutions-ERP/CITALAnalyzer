@@ -3,7 +3,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Semantics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Symbols;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 
-namespace CITALAnalyzer.Helpers;
+namespace CountITBCALCop.Helpers;
 
 public static class OperationHelper
 {

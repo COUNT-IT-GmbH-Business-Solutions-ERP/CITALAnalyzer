@@ -1,4 +1,4 @@
-using CITALAnalyzer.Helpers;
+using CountITBCALCop.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 // CIGP0003 – CalcSums vs. Loop
 // "When calculating the sum of a field in a filter, CalcSums must always be used."
 
-namespace CITALAnalyzer.Design;
+namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
 public class Rule0013UseCalcSumWhenCalculationSumOfFieldInFilter : DiagnosticAnalyzer

@@ -1,4 +1,4 @@
-using CITALAnalyzer.Helpers;
+using CountITBCALCop.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Symbols;
@@ -10,7 +10,7 @@ using System.Collections.Immutable;
 
 // add :=
 
-namespace CITALAnalyzer.Design;
+namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
 public class Rule0014IfTextIsContinuouslyChangedUseTextBuilder : DiagnosticAnalyzer
@@ -19,11 +19,11 @@ public class Rule0014IfTextIsContinuouslyChangedUseTextBuilder : DiagnosticAnaly
         = ImmutableArray.Create(DiagnosticDescriptors.Rule0014IfTextIsContinuouslyChangedUseTextBuilder);
 
     public override void Initialize(AnalysisContext context) =>
-    context.RegisterCodeBlockAction(new Action<CodeBlockAnalysisContext>(AnalyzeMethod));
+        context.RegisterCodeBlockAction(new Action<CodeBlockAnalysisContext>(AnalyzeMethod));
 
-    private void AnalyzeMethod(CodeBlockAnalysisContext ctx)
+    private static void AnalyzeMethod(CodeBlockAnalysisContext ctx)
     {
-        if (ctx.IsObsoletePendingOrRemoved() || ctx.CodeBlock is not MethodDeclarationSyntax method || method.Body is null)
+        if (ctx.IsObsoletePendingOrRemoved() || ctx.CodeBlock is not MethodDeclarationSyntax method || method.Body == null)
             return;
 
         var model = ctx.SemanticModel;
@@ -31,37 +31,68 @@ public class Rule0014IfTextIsContinuouslyChangedUseTextBuilder : DiagnosticAnaly
 
         foreach (var loop in method.Body.DescendantNodes().OfType<ForStatementSyntax>())
             MarkTextUsagesIn(loop, model, ct, ctx);
-
         foreach (var loop in method.Body.DescendantNodes().OfType<WhileStatementSyntax>())
             MarkTextUsagesIn(loop, model, ct, ctx);
-
         foreach (var loop in method.Body.DescendantNodes().OfType<RepeatStatementSyntax>())
             MarkTextUsagesIn(loop, model, ct, ctx);
     }
 
     private static void MarkTextUsagesIn(
-    SyntaxNode loopNode,
-    SemanticModel model,
-    System.Threading.CancellationToken ct,
-    CodeBlockAnalysisContext ctx)
+        SyntaxNode loopNode,
+        SemanticModel model,
+        System.Threading.CancellationToken ct,
+        CodeBlockAnalysisContext ctx)
     {
+        // "+="
         foreach (var comp in loopNode.DescendantNodes().OfType<CompoundAssignmentStatementSyntax>())
         {
-            // Only "+="
             if (comp.AssignmentToken.Kind != SyntaxKind.AssignPlusToken)
                 continue;
-
             if (comp.Target is not IdentifierNameSyntax id)
                 continue;
 
             if (model.GetSymbolInfo(id, ct).Symbol is IVariableSymbol vsym && vsym.Type.IsTextType())
             {
+                // continuously changed
                 ctx.ReportDiagnostic(Diagnostic.Create(
                     DiagnosticDescriptors.Rule0014IfTextIsContinuouslyChangedUseTextBuilder,
                     comp.GetLocation(),
                     vsym.Name));
             }
         }
+
+        // ":=" (append only: textVar := textVar + 'Text')
+        foreach (var assign in loopNode.DescendantNodes().OfType<AssignmentStatementSyntax>())
+        {
+            if (assign.AssignmentToken.Kind != SyntaxKind.AssignToken || assign.Target is not IdentifierNameSyntax targetId)
+                continue;
+
+            // LHS must be Text
+            if (model.GetSymbolInfo(targetId, ct).Symbol is not IVariableSymbol targetSym || !targetSym.Type.IsTextType())
+                continue;
+
+            if (assign.Source is BinaryExpressionSyntax bin && bin.Kind == SyntaxKind.AddExpression)
+            {
+                // only append pattern: same identifier on left side of '+'
+                if (!IsSameIdentifier(targetId, bin.Left))
+                    continue;
+
+                // RHS must be a literal (we avoid GetTypeInfo; AL strings are literals like 'Text')
+                if (!IsLiteral(bin.Right))
+                    continue;
+
+                // continuously changed
+                ctx.ReportDiagnostic(Diagnostic.Create(
+                    DiagnosticDescriptors.Rule0014IfTextIsContinuouslyChangedUseTextBuilder,
+                    assign.GetLocation(),
+                    targetSym.Name));
+            }
+        }
     }
 
+    private static bool IsLiteral(SyntaxNode node) =>
+        node is LiteralExpressionSyntax;
+
+    private static bool IsSameIdentifier(IdentifierNameSyntax target, SyntaxNode expr) =>
+        expr is IdentifierNameSyntax id && id.Identifier.ValueText == target.Identifier.ValueText;
 }

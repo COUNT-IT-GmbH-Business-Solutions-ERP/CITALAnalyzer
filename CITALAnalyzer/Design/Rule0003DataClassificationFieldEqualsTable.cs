@@ -1,4 +1,4 @@
-﻿using CITALAnalyzer.Helpers;
+﻿using CountITBCALCop.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
@@ -7,7 +7,7 @@ using System.Text.Json;
 // CIG0003 - DataClassification
 // "Omit DataClassification, except for AppSource or when it is explicitly required."
 
-namespace CITALAnalyzer.Design;
+namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
 public class Rule0003CheckIfDefaultDataClassification : DiagnosticAnalyzer

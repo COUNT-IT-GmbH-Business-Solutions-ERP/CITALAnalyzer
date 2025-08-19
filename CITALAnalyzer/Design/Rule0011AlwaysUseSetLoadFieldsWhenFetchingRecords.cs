@@ -1,4 +1,4 @@
-using CITALAnalyzer.Helpers;
+using CountITBCALCop.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
@@ -12,7 +12,7 @@ using System.Collections.Immutable;
 // Transfer fields - disable rule, 
 // if used more than 10 fields - disable rules
 
-namespace CITALAnalyzer.Design
+namespace CountITBCALCop.Design
 {
     [DiagnosticAnalyzer]
     public class Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecords : DiagnosticAnalyzer

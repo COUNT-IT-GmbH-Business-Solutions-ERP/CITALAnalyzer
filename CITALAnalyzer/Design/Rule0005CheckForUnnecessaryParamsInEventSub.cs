@@ -6,7 +6,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 // CIG0005 - EventSub Parameter
 // "In an EventSubscriber, only the parameters that are actually needed should be passed."
 
-namespace CITALAnalyzer.Design;
+namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
 public class Rule0005CheckForUnnecessaryParamsInEventSub : DiagnosticAnalyzer

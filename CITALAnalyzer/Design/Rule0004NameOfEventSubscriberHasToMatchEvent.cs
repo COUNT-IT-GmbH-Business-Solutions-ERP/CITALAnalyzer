@@ -1,5 +1,5 @@
 using System.Collections.Immutable;
-using CITALAnalyzer.Helpers;
+using CountITBCALCop.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
@@ -7,7 +7,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 // CIG0004 - EventSub Name
 // "The name of the event subscriber must match the name of the event it subscribes to."
 
-namespace CITALAnalyzer.Design;
+namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
 public class Rule0004NameOfEventSubsrciberHasToMatchEvent : DiagnosticAnalyzer

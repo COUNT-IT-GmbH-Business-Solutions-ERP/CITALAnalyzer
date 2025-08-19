@@ -1,12 +1,12 @@
 ﻿using System.Collections.Immutable;
-using CITALAnalyzer.Helpers;
+using CountITBCALCop.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 
 // CIG0002 - Table Field Captions
 // "Captions must always be defined for table fields, even if the field name is the same as the caption."
 
-namespace CITALAnalyzer.Design;
+namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
 public class Rule0002CheckForMissingCaptions : DiagnosticAnalyzer

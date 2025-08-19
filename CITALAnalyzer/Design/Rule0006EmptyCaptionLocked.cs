@@ -1,5 +1,5 @@
 using System.Collections.Immutable;
-using CITALAnalyzer.Helpers;
+using CountITBCALCop.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
@@ -7,7 +7,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 // CIG0006 - Locked Captions
 // "For empty captions, the Locked property must be set to true."
 
-namespace CITALAnalyzer.Design;
+namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
 public class Rule0006EmptyCaptionLocked : DiagnosticAnalyzer

@@ -9,12 +9,12 @@ using System.Text.Json;
 
 
 
-namespace CITALAnalyzer
+namespace CountITBCALCop
 {
     [GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [DebuggerNonUserCode]
     [CompilerGenerated]
-    internal class CITALAnalyzerAnalyzers
+    internal class CountITBCALCopAnalyzers
     {
         private static ResourceManager? resourceMan;
         private static CultureInfo? resourceCulture;
@@ -24,17 +24,17 @@ namespace CITALAnalyzer
         {
             get
             {
-                if (CITALAnalyzerAnalyzers.resourceMan is null)
-                    CITALAnalyzerAnalyzers.resourceMan = new ResourceManager("CITALAnalyzer.CITALAnalyzerAnalyzers", typeof(CITALAnalyzerAnalyzers).Assembly);
-                return CITALAnalyzerAnalyzers.resourceMan;
+                if (CountITBCALCopAnalyzers.resourceMan is null)
+                    CountITBCALCopAnalyzers.resourceMan = new ResourceManager("CountITBCALCop.CountITBCALCopAnalyzers", typeof(CountITBCALCopAnalyzers).Assembly);
+                return CountITBCALCopAnalyzers.resourceMan;
             }
         }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         internal static CultureInfo Culture
         {
-            get => CITALAnalyzerAnalyzers.resourceCulture ?? CultureInfo.CurrentUICulture;
-            set => CITALAnalyzerAnalyzers.resourceCulture = value;
+            get => CountITBCALCopAnalyzers.resourceCulture ?? CultureInfo.CurrentUICulture;
+            set => CountITBCALCopAnalyzers.resourceCulture = value;
         }
 
         internal static string AnalyzerPrefix => GetFromResourceManager();
@@ -43,8 +43,8 @@ namespace CITALAnalyzer
         {
             return new LocalizableResourceString(
                 nameOfLocalizableResource,
-                CITALAnalyzerAnalyzers.ResourceManager,
-                typeof(CITALAnalyzerAnalyzers)
+                CountITBCALCopAnalyzers.ResourceManager,
+                typeof(CountITBCALCopAnalyzers)
                 );
         }
 
@@ -54,8 +54,8 @@ namespace CITALAnalyzer
             if (resourceName is null)
                 throw new ArgumentNullException(nameof(resourceName));
 
-            string? value = CITALAnalyzerAnalyzers.ResourceManager
-                .GetString(resourceName, CITALAnalyzerAnalyzers.resourceCulture);
+            string? value = CountITBCALCopAnalyzers.ResourceManager
+                .GetString(resourceName, CountITBCALCopAnalyzers.resourceCulture);
 
             if (value is null)
                 throw new InvalidOperationException(

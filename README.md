@@ -1,23 +1,23 @@
-# CITALAnalyzer
+# CountITBCALCop
 
-If you are not happy with some rules or only feel like you need one rule of this analyzer, you can always control the rules with a [Custom.ruleset.json](CITALAnalyzer.ruleset.json) and disable all rules you don't need.
+If you are not happy with some rules or only feel like you need one rule of this analyzer, you can always control the rules with a [Custom.ruleset.json](CountITBCALCop.ruleset.json) and disable all rules you don't need.
 
 
 ## Configuration
 
-Some rules can be configured by adding a file named `CITALAnalyzer.json` in the root of your project.
+Some rules can be configured by adding a file named `CountITBCALCop.json` in the root of your project.
 **Important:** The file will only be read on startup of the linter, meaning if you make any changes you need to reload VS Code once.
 
 ### How to append new rules
 
 
-1. In `CITALAnalyzer/CITALAnalyzer.ruleset.json`, copy an existing rule block and adjust it accordingly (id, Action, justification).
+1. In `CountITBCALCop.ruleset.json`, copy an existing rule block and adjust it accordingly (id, Action, justification).
 
-2. In `CITALAnalyzer/CITALAnalyzerAnalyzers.resx`, copy a rule block and update the contents (Title, Format, Description — this is the comment shown to the user).
+2. In `CountITBCALCopAnalyzers.resx`, copy a rule block and update the contents (Title, Format, Description — this is the comment shown to the user).
 
-3. In `CITALAnalyzer/DiagnosticDescriptors`, copy a rule block and modify the values (id, title, messageFormat, category, defaultSeverity, isEnabledByDefault, description, helpLinkUri).
+3. In `DiagnosticDescriptors`, copy a rule block and modify the values (id, title, messageFormat, category, defaultSeverity, isEnabledByDefault, description, helpLinkUri).
 
-4. In `CITALAnalyzer/Design/`, create a new `.cs` file where the logical part of the rule check will be implemented. 
+4. In `Design/`, create a new `.cs` file where the logical part of the rule check will be implemented. 
 
     - In this new file create a new class that needs to be derived from the DiagnosticAnalyzer Class and name it after the rule you want to implement. 
     - Here you need to make the implementation of the abstract methods *SupportedDiagnostics* and *Initialize*. 
@@ -100,7 +100,7 @@ Upon successful build, the compiled DLL will be located in one of the following 
 
 #### 5. Deploy the Analyzer DLL
 
-Copy the generated DLL file (`CITALAnalyzer.dll`) into the AL analyzer folder, where other Microsoft analyzers are stored:
+Copy the generated DLL file (`CountITBCALCop.dll`) into the AL analyzer folder, where other Microsoft analyzers are stored:
 
 C:\Users\\\<YourUser>\\.vscode\extensions\ms-dynamics-smb.al-\<version>\bin\Analyzers
 
@@ -111,7 +111,7 @@ Replace `<YourUser>` with your Windows username and `<version>` with your instal
 Add the DLL to the AL Code Analyzer settings by modifying your AL settings JSON configuration. Add the following entry under the `"al.codeAnalyzers"` array:
 
 ```json
-"${analyzerfolder}CITALAnalyzer.dll",
+"${analyzerfolder}CountITBCALCop.dll",
 ```
 
 #### 7. Restart Visual Studio Code

@@ -1,4 +1,4 @@
-using CITALAnalyzer.Helpers;
+using CountITBCALCop.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.InternalSyntax;
@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 // CIG0008 - EventSub File Name
 // "Event subscribers must always be placed in a codeunit that has the same name as the object to which the event belongs."
 
-namespace CITALAnalyzer.Design;
+namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
 public class Rule0008EventSubsInCorrectCodeunit : DiagnosticAnalyzer

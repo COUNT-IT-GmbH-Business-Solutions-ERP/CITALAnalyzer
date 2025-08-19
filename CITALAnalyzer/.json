@@ -1,5 +1,5 @@
 {
-  "name": "CITALAnalyzerRuleset",
+  "name": "CountITBCALCopRuleset",
   "description": "Name of Variables must not contain a prefex except it is necessary for avoiding conflicts.",
   "rules": [
     {
