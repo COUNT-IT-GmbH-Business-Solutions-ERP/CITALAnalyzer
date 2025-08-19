@@ -20,10 +20,24 @@ public class HelperFunctions
         return Regex.Replace(name, "[^a-zA-Z0-9]", "");
     }
 
-    public static bool HasPrefix(string name) =>
-        Regex.IsMatch(name, @"^[A-Z]{3}");
 
-    public static string RemovePrefix(string name) =>
-        HasPrefix(name) ? name.Substring(3) : name;
+    // removes all leading uppercase letters except the last one -> First Letter of Object name
+    public static string RemovePrefix(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            return name;
+
+        // match ≥3 uppercase letters at start
+        var match = Regex.Match(name, @"^([A-Z]{3,})(.*)$");
+        if (match.Success)
+        {
+            string prefix = match.Groups[1].Value;
+            string rest = match.Groups[2].Value;
+
+            return prefix[^1] + rest;
+        }
+
+        return name;
+    }
 
 }
