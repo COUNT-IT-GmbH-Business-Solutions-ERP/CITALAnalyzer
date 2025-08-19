@@ -4,6 +4,16 @@ namespace CountITBCALCop;
 
 public static class DiagnosticDescriptors
 {
+    public static readonly DiagnosticDescriptor Rule0000CheckProjectStructureAzureDevOps = new(
+        id: CountITBCALCopAnalyzers.AnalyzerPrefix + "0002",
+        title: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureAzureDevOpsTitle"),
+        messageFormat: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureAzureDevOpsFormat"),
+        category: "Design",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureAzureDevOpsDescription"),
+        helpLinkUri: "");
+
     public static readonly DiagnosticDescriptor Rule0002CheckForMissingCaptions = new(
         id: CountITBCALCopAnalyzers.AnalyzerPrefix + "0002",
         title: CountITBCALCopAnalyzers.GetLocalizableString("Rule0002CheckForMissingCaptionsTitle"),

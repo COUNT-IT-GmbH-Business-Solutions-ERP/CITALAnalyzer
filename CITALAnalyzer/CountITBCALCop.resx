@@ -122,8 +122,17 @@
     <value>CI</value>
   </data>
   <!-- Rules -->
+  <data name="Rule0000CheckProjectStructureAzureDevOpsDescription" xml:space="preserve">
+    <value>Project structure is not following official conventions (Azure DevOps).</value>
+  </data>
+  <data name="Rule0000CheckProjectStructureAzureDevOpsFormat" xml:space="preserve">
+    <value>Project structure is not following official conventions (Azure DevOps).</value>
+  </data>
+  <data name="Rule0000CheckProjectStructureAzureDevOpsTitle" xml:space="preserve">
+    <value>Project structure is not following official conventions (Azure DevOps).</value>
+  </data>
   <data name="Rule0002CheckForMissingCaptionsDescription" xml:space="preserve">
-    <value>Caption is missing.</value>
+    <value>Caption is missing.</value>s
   </data>
   <data name="Rule0002CheckForMissingCaptionsFormat" xml:space="preserve">
     <value>Caption is missing.</value>
