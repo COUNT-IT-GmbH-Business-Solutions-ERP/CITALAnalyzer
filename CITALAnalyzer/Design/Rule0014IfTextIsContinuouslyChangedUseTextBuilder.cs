@@ -8,8 +8,6 @@ using System.Collections.Immutable;
 // CIGP0004 – Text. Vs TextBuilder
 // "If a text is continuously changed, the data type TextBuilder must be used."
 
-// add :=
-
 namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
@@ -53,7 +51,6 @@ public class Rule0014IfTextIsContinuouslyChangedUseTextBuilder : DiagnosticAnaly
 
             if (model.GetSymbolInfo(id, ct).Symbol is IVariableSymbol vsym && vsym.Type.IsTextType())
             {
-                // continuously changed
                 ctx.ReportDiagnostic(Diagnostic.Create(
                     DiagnosticDescriptors.Rule0014IfTextIsContinuouslyChangedUseTextBuilder,
                     comp.GetLocation(),
@@ -67,21 +64,17 @@ public class Rule0014IfTextIsContinuouslyChangedUseTextBuilder : DiagnosticAnaly
             if (assign.AssignmentToken.Kind != SyntaxKind.AssignToken || assign.Target is not IdentifierNameSyntax targetId)
                 continue;
 
-            // LHS must be Text
             if (model.GetSymbolInfo(targetId, ct).Symbol is not IVariableSymbol targetSym || !targetSym.Type.IsTextType())
                 continue;
 
             if (assign.Source is BinaryExpressionSyntax bin && bin.Kind == SyntaxKind.AddExpression)
             {
-                // only append pattern: same identifier on left side of '+'
                 if (!IsSameIdentifier(targetId, bin.Left))
                     continue;
 
-                // RHS must be a literal (we avoid GetTypeInfo; AL strings are literals like 'Text')
                 if (!IsLiteral(bin.Right))
                     continue;
 
-                // continuously changed
                 ctx.ReportDiagnostic(Diagnostic.Create(
                     DiagnosticDescriptors.Rule0014IfTextIsContinuouslyChangedUseTextBuilder,
                     assign.GetLocation(),
