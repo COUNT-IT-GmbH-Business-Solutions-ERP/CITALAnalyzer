@@ -1,7 +1,4 @@
-﻿using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.Dynamics.Nav.CodeAnalysis;
-using System.Text.Json;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace CountITBCALCop.Helpers;
 

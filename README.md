@@ -128,14 +128,14 @@ Register methods that are used quite often are:
 - RegisterSymbolAction (checks for SymbolKind). It operates on semantic level. E.g. for checking if the symbol at hand is a GlobalVariable
     - see enum SymbolKind for possible matches.
 
-- RegisterSyntaxNodeActions (checks for SyntaxKind). This one operates on the elevel of syntax. It walks throught the syntax tree and analyzes if your specified kind of SyntaxNode matches. E.g. for checking if I am currently checking something inside a PageObject.
-    - see enum SynatxKind for possible matches.
+- RegisterSyntaxNodeActions (checks for SyntaxKind). This one operates on the level of syntax. It walks through the syntax tree and analyzes if your specified kind of SyntaxNode matches. E.g. for checking if I am currently checking something inside a PageObject.
+    - see enum SyntaxKind for possible matches.
 
 - RegisterCodeBlockAction. For Analyzing the content of an entire codeblock.
 
 You can find other RegistrationMethods in the class AnalysisContext
 
-### Helpfull links and repositories
+### Helpful links and repositories
 
 Learn more about e.g. Debugging, pipeline integration, testing, other rules,...
 

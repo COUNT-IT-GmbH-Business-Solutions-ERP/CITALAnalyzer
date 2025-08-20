@@ -4,7 +4,7 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 using System.Collections.Immutable;
 
-// CIGP0005 - Prozdeuren als Source Expression verwenden
+// CIGP0005 - Using procedures as Source Expressions
 // "Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord()."
 
 namespace CountITBCALCop.Design;

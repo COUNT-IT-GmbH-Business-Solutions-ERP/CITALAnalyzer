@@ -5,7 +5,7 @@ namespace CountITBCALCop;
 public static class DiagnosticDescriptors
 {
     public static readonly DiagnosticDescriptor Rule0000CheckProjectStructureAzureDevOps = new(
-        id: CountITBCALCopAnalyzers.AnalyzerPrefix + "0002",
+        id: CountITBCALCopAnalyzers.AnalyzerPrefix + "0000",
         title: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureAzureDevOpsTitle"),
         messageFormat: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureAzureDevOpsFormat"),
         category: "Design",
