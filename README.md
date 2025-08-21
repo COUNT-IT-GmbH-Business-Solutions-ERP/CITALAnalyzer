@@ -52,7 +52,7 @@ https://docs.microsoft.com/en-us/dynamics365/business-central/dev-itpro/develope
 |[CI0012](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIGP0002-%E2%80%90-SetAutoCalcFields-vs.-CalcFields)|Always use SetAutoCalcFields instead of CalcFields.|Warning|
 |[CI0013](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIGP0003-%E2%80%93-CalcSums-vs.-Loop)|When calculating the sum of a field in a filter, CalcSums must always be used.|Warning|
 |[CI0014](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIGP0004-%E2%80%93-Text.-Vs-TextBuilder)|If a text is continuously changed, the data type TextBuilder must be used.|Warning|
-|[CI0015](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIGP0005-%E2%80%93-Prozdeuren-als-Source-Expression-verwenden)|Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().|Warning|
+|[CI0015](https://github.com/COUNT-IT-GmbH-Business-Solutions-ERP/CITALAnalyzer/wiki/CIGP0005-%E2%80%93-Prozeduren-als-Source-Expression-verwenden)|Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().|Warning|
 
 ## Codespace
 
