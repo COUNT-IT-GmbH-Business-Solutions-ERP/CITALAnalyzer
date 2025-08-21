@@ -28,9 +28,6 @@ public class Rule0012UseSetAutoCalcFieldsInsteadOfCalcFields : DiagnosticAnalyze
         if (!string.Equals(op.TargetMethod.Name, "CalcFields", StringComparison.OrdinalIgnoreCase))
             return;
 
-        // ignore temporaries
-        // if (op.Instance?.GetSymbol() is IVariableSymbol { Type: IRecordTypeSymbol r } && r.Temporary) return;
-
         ctx.ReportDiagnostic(Diagnostic.Create(
             DiagnosticDescriptors.Rule0012UseSetAutoCalcFieldsInsteadOfCalcFields,
             op.Syntax.GetLocation()));

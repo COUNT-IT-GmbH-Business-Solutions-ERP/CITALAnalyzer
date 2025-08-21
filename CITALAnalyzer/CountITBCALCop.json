@@ -1,8 +1,0 @@
-{
-  "cyclomaticComplexityThreshold": 8,
-  "maintainabilityIndexThreshold": 20,
-  "cognitiveComplexityThreshold": 15,
-  "enableRule0011ForTableFields": false,
-  "enableRule0016ForApiObjects": false,
-  "languagesToTranslate": []
-}

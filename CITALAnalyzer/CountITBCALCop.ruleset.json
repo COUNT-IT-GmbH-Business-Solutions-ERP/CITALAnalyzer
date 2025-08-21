@@ -1,6 +1,5 @@
 {
   "name": "CountITBCALCopRuleset",
-  "description": "Name of Variables must not contain a prefix except it is necessary for avoiding conflicts.",
   "rules": [
     {
       "id": "CI0000",

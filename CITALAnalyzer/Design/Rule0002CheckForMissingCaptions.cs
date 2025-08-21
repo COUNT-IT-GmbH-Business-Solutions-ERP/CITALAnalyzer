@@ -18,8 +18,7 @@ public class Rule0002CheckForMissingCaptions : DiagnosticAnalyzer
         SyntaxFacts.PredefinedActionCategoryNames.Select(x => x.Key.ToLowerInvariant()).ToHashSet();
 
     public override void Initialize(AnalysisContext context)
-        => context.RegisterSymbolAction(new Action<SymbolAnalysisContext>(this.CheckForMissingCaptions), SymbolKind.Field
-        );
+        => context.RegisterSymbolAction(new Action<SymbolAnalysisContext>(this.CheckForMissingCaptions), SymbolKind.Field);
 
     private void CheckForMissingCaptions(SymbolAnalysisContext ctx)
     {
@@ -27,28 +26,28 @@ public class Rule0002CheckForMissingCaptions : DiagnosticAnalyzer
             return;
 
         IApplicationObjectTypeSymbol? applicationObject = field.GetContainingApplicationObjectTypeSymbol();
-        if (applicationObject is not ITableTypeSymbol || applicationObject.IsObsoletePendingOrRemoved() || field.ContainingSymbol is not ITableTypeSymbol table)
+
+        if (applicationObject is not ITableTypeSymbol ||
+            applicationObject.IsObsoletePendingOrRemoved() ||
+            field.ContainingSymbol is not ITableTypeSymbol table)
             return;
 
         if (CaptionIsMissing(field, ctx))
         {
-            RaiseCaptionWarning(ctx);
+            ctx.ReportDiagnostic(Diagnostic.Create(
+            DiagnosticDescriptors.Rule0002CheckForMissingCaptions,
+            ctx.Symbol.GetLocation()));
         }
     }
 
+    // if Caption is missing -> report
     private bool CaptionIsMissing(ISymbol Symbol, SymbolAnalysisContext context)
     {
-
         if (Symbol.GetBooleanPropertyValue(PropertyKind.ShowCaption) != false)
-            if (Symbol.GetProperty(PropertyKind.Caption) is null && Symbol.GetProperty(PropertyKind.CaptionClass) is null && Symbol.GetProperty(PropertyKind.CaptionML) is null)
+            if (Symbol.GetProperty(PropertyKind.Caption) is null &&
+                Symbol.GetProperty(PropertyKind.CaptionClass) is null &&
+                Symbol.GetProperty(PropertyKind.CaptionML) is null)
                 return true;
         return false;
-    }
-
-    private void RaiseCaptionWarning(SymbolAnalysisContext context)
-    {
-        context.ReportDiagnostic(Diagnostic.Create(
-            DiagnosticDescriptors.Rule0002CheckForMissingCaptions,
-            context.Symbol.GetLocation()));
     }
 }

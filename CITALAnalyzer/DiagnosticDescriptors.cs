@@ -103,7 +103,6 @@ public static class DiagnosticDescriptors
         isEnabledByDefault: true,
         description: CountITBCALCopAnalyzers.GetLocalizableString("Rule0010CallByReferenceOnlyIfVariableChangedInProcedureDescription"),
         helpLinkUri: "");
-    // ##################################################################################################################################
 
     public static readonly DiagnosticDescriptor Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecords = new(
         id: CountITBCALCopAnalyzers.AnalyzerPrefix + "0011",

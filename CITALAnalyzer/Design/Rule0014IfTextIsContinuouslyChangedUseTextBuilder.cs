@@ -8,6 +8,9 @@ using System.Collections.Immutable;
 // CIGP0004 – Text. Vs TextBuilder
 // "If a text is continuously changed, the data type TextBuilder must be used."
 
+// issue: only checks in methods, needs to check all repeat/for/while loops 
+// eg not checking triggers
+
 namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
@@ -21,7 +24,7 @@ public class Rule0014IfTextIsContinuouslyChangedUseTextBuilder : DiagnosticAnaly
 
     private static void AnalyzeMethod(CodeBlockAnalysisContext ctx)
     {
-        if (ctx.IsObsoletePendingOrRemoved() || ctx.CodeBlock is not MethodDeclarationSyntax method || method.Body == null)
+        if (ctx.IsObsoletePendingOrRemoved() || ctx.CodeBlock is not MethodDeclarationSyntax method || method.Body == null) // method is not enough
             return;
 
         var model = ctx.SemanticModel;
