@@ -8,9 +8,6 @@ using System.Collections.Immutable;
 // CIGP0004 – Text. Vs TextBuilder
 // "If a text is continuously changed, the data type TextBuilder must be used."
 
-// issue: only checks in methods, needs to check all repeat/for/while loops 
-// eg not checking triggers
-
 namespace CountITBCALCop.Design;
 
 [DiagnosticAnalyzer]
@@ -19,49 +16,85 @@ public class Rule0014IfTextIsContinuouslyChangedUseTextBuilder : DiagnosticAnaly
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics { get; }
         = ImmutableArray.Create(DiagnosticDescriptors.Rule0014IfTextIsContinuouslyChangedUseTextBuilder);
 
-    public override void Initialize(AnalysisContext context) =>
+    public override void Initialize(AnalysisContext context)
+    {
+        // analysing method bodys
         context.RegisterCodeBlockAction(new Action<CodeBlockAnalysisContext>(AnalyzeMethod));
+
+        // analysing trigger bodys
+        context.RegisterSyntaxNodeAction(new Action<SyntaxNodeAnalysisContext>(AnalyzeTrigger), SyntaxKind.TriggerDeclaration);
+    }
 
     private static void AnalyzeMethod(CodeBlockAnalysisContext ctx)
     {
-        if (ctx.IsObsoletePendingOrRemoved() || ctx.CodeBlock is not MethodDeclarationSyntax method || method.Body == null) // method is not enough
+        if (ctx.IsObsoletePendingOrRemoved() || ctx.CodeBlock is not MethodDeclarationSyntax method || method.Body == null)
             return;
 
-        var model = ctx.SemanticModel;
-        var ct = ctx.CancellationToken;
+        AnalyzeBodyForTextAppendLoops(
+            method.Body,
+            ctx.SemanticModel,
+            ctx.CancellationToken,
+            d => ctx.ReportDiagnostic(d));
+    }
 
-        foreach (var loop in method.Body.DescendantNodes().OfType<ForStatementSyntax>())
-            MarkTextUsagesIn(loop, model, ct, ctx);
-        foreach (var loop in method.Body.DescendantNodes().OfType<WhileStatementSyntax>())
-            MarkTextUsagesIn(loop, model, ct, ctx);
-        foreach (var loop in method.Body.DescendantNodes().OfType<RepeatStatementSyntax>())
-            MarkTextUsagesIn(loop, model, ct, ctx);
+    private static void AnalyzeTrigger(SyntaxNodeAnalysisContext ctx)
+    {
+        if (ctx.IsObsoletePendingOrRemoved())
+            return;
+
+        if (ctx.Node is not TriggerDeclarationSyntax trigger || trigger.Body == null)
+            return;
+
+        AnalyzeBodyForTextAppendLoops(
+            trigger.Body,
+            ctx.SemanticModel,
+            ctx.CancellationToken,
+            d => ctx.ReportDiagnostic(d));
+    }
+
+    // Scans the given body for for/while/repeat loops and reports string-append patterns.
+    private static void AnalyzeBodyForTextAppendLoops(
+        SyntaxNode body,
+        SemanticModel model,
+        CancellationToken ct,
+        Action<Diagnostic> report)
+    {
+        foreach (var loop in body.DescendantNodes().OfType<ForStatementSyntax>())
+            MarkTextUsagesIn(loop, model, ct, report);
+
+        foreach (var loop in body.DescendantNodes().OfType<WhileStatementSyntax>())
+            MarkTextUsagesIn(loop, model, ct, report);
+
+        foreach (var loop in body.DescendantNodes().OfType<RepeatStatementSyntax>())
+            MarkTextUsagesIn(loop, model, ct, report);
     }
 
     private static void MarkTextUsagesIn(
         SyntaxNode loopNode,
         SemanticModel model,
-        System.Threading.CancellationToken ct,
-        CodeBlockAnalysisContext ctx)
+        CancellationToken ct,
+        Action<Diagnostic> report)
     {
         // "+="
         foreach (var comp in loopNode.DescendantNodes().OfType<CompoundAssignmentStatementSyntax>())
         {
             if (comp.AssignmentToken.Kind != SyntaxKind.AssignPlusToken)
                 continue;
+
             if (comp.Target is not IdentifierNameSyntax id)
                 continue;
 
-            if (model.GetSymbolInfo(id, ct).Symbol is IVariableSymbol vsym && vsym.Type.IsTextType())
+            var sym = model.GetSymbolInfo(id, ct).Symbol as IVariableSymbol;
+            if (sym is not null && sym.Type.IsTextType())
             {
-                ctx.ReportDiagnostic(Diagnostic.Create(
+                report(Diagnostic.Create(
                     DiagnosticDescriptors.Rule0014IfTextIsContinuouslyChangedUseTextBuilder,
                     comp.GetLocation(),
-                    vsym.Name));
+                    sym.Name));
             }
         }
 
-        // ":=" (append only: textVar := textVar + 'Text')
+        // ":=" append-only pattern
         foreach (var assign in loopNode.DescendantNodes().OfType<AssignmentStatementSyntax>())
         {
             if (assign.AssignmentToken.Kind != SyntaxKind.AssignToken || assign.Target is not IdentifierNameSyntax targetId)
@@ -78,7 +111,7 @@ public class Rule0014IfTextIsContinuouslyChangedUseTextBuilder : DiagnosticAnaly
                 if (!IsLiteral(bin.Right))
                     continue;
 
-                ctx.ReportDiagnostic(Diagnostic.Create(
+                report(Diagnostic.Create(
                     DiagnosticDescriptors.Rule0014IfTextIsContinuouslyChangedUseTextBuilder,
                     assign.GetLocation(),
                     targetSym.Name));
@@ -89,6 +122,14 @@ public class Rule0014IfTextIsContinuouslyChangedUseTextBuilder : DiagnosticAnaly
     private static bool IsLiteral(SyntaxNode node) =>
         node is LiteralExpressionSyntax;
 
-    private static bool IsSameIdentifier(IdentifierNameSyntax target, SyntaxNode expr) =>
-        expr is IdentifierNameSyntax id && id.Identifier.ValueText == target.Identifier.ValueText;
+    private static bool IsSameIdentifier(IdentifierNameSyntax target, SyntaxNode expr)
+    {
+        if (expr is IdentifierNameSyntax id)
+        {
+            var lhs = target.Identifier.ValueText;
+            var rhs = id.Identifier.ValueText;
+            return !string.IsNullOrEmpty(lhs) && lhs == rhs;
+        }
+        return false;
+    }
 }
