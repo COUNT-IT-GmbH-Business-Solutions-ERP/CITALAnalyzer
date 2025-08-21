@@ -7,10 +7,8 @@ using System.Collections.Immutable;
 // CIGP0001 - SetLoadFields
 // "SetLoadFields must always be used before fetching a record from the database."
 
-// which methods should use a setLoadFields before they are used?
-
 // Transfer fields - disable rule, 
-// if used more than 10 fields - disable rules
+// if using more than 10 fields - disable rule
 
 namespace CountITBCALCop.Design
 {
@@ -39,26 +37,46 @@ namespace CountITBCALCop.Design
         private const string TransferFieldsMethod = "TransferFields";
         private const int FieldUsageThreshold = 10; // records using >10 fields => skip rule
 
-        public override void Initialize(AnalysisContext context) =>
-            context.RegisterCodeBlockAction(new Action<CodeBlockAnalysisContext>(AnalyzeCodeBlock));
+        public override void Initialize(AnalysisContext context)
+        {
+            // analyze methods
+            context.RegisterCodeBlockAction(new Action<CodeBlockAnalysisContext>(AnalyzeMethod));
+            // analyze triggers
+            context.RegisterSyntaxNodeAction(AnalyzeTrigger, SyntaxKind.TriggerDeclaration);
+        }
 
-        private void AnalyzeCodeBlock(CodeBlockAnalysisContext ctx)
+        private void AnalyzeMethod(CodeBlockAnalysisContext ctx)
         {
             if (ctx.IsObsoletePendingOrRemoved() || ctx.CodeBlock is not MethodDeclarationSyntax methodSyntax)
                 return;
 
-            var semanticModel = ctx.SemanticModel;
-            var cancellationToken = ctx.CancellationToken;
-
-            if (methodSyntax.Body == null)
+            if (methodSyntax.Body is null)
                 return;
 
-            // ---------------------------------------------------------------------
+            AnalyzeBody(methodSyntax.Body, ctx.SemanticModel, ctx.CancellationToken, d => ctx.ReportDiagnostic(d));
+        }
+
+        private void AnalyzeTrigger(SyntaxNodeAnalysisContext ctx)
+        {
+            if (ctx.IsObsoletePendingOrRemoved())
+                return;
+
+            if (ctx.Node is not TriggerDeclarationSyntax trigger || trigger.Body is null)
+                return;
+
+            AnalyzeBody(trigger.Body, ctx.SemanticModel, ctx.CancellationToken, d => ctx.ReportDiagnostic(d));
+        }
+
+        private static void AnalyzeBody(
+            BlockSyntax body,
+            SemanticModel semanticModel,
+            System.Threading.CancellationToken cancellationToken,
+            Action<Diagnostic> report)
+        {
             // PASS 1A: collect all records that participate in TransferFields
-            // ---------------------------------------------------------------------
             var recordsUsingTransferFields = new HashSet<IVariableSymbol>();
 
-            foreach (var inv in methodSyntax.Body.DescendantNodes().OfType<InvocationExpressionSyntax>())
+            foreach (var inv in body.DescendantNodes().OfType<InvocationExpressionSyntax>())
             {
                 if (semanticModel.GetOperation(inv, cancellationToken) is not IInvocationExpression op)
                     continue;
@@ -76,7 +94,7 @@ namespace CountITBCALCop.Design
                     recordsUsingTransferFields.Add(recvVar);
                 }
 
-                // Any record arguments: e.g., TransferFields(SrcCust)
+                // Any record arguments: TransferFields(SrcCust)
                 foreach (var arg in op.Arguments)
                 {
                     var valueOp = arg.Value;
@@ -91,11 +109,7 @@ namespace CountITBCALCop.Design
                 }
             }
 
-            // ---------------------------------------------------------------------
-            // PASS 1B: count distinct field usages per record
-            //   - Qualified access: Rec.Field
-            //   - WITH blocks:     Field (inside WITH Rec DO ...)
-            // ---------------------------------------------------------------------
+            // PASS 1B: count distinct field usages per record (Rec.Field and WITH Rec DO Field)
             var fieldsUsedByRecord = new Dictionary<IVariableSymbol, HashSet<int>>();
 
             void AddFieldUsage(IVariableSymbol recVar, int fieldId)
@@ -109,7 +123,7 @@ namespace CountITBCALCop.Design
             }
 
             // Case 1: Rec.Field
-            foreach (var ma in methodSyntax.Body.DescendantNodes().OfType<MemberAccessExpressionSyntax>())
+            foreach (var ma in body.DescendantNodes().OfType<MemberAccessExpressionSyntax>())
             {
                 var instanceSym = semanticModel.GetSymbolInfo(ma.Expression, cancellationToken).Symbol;
                 if (instanceSym is not IVariableSymbol { Type: IRecordTypeSymbol recType } recVar)
@@ -119,13 +133,11 @@ namespace CountITBCALCop.Design
 
                 var memberSym = semanticModel.GetSymbolInfo(ma.Name, cancellationToken).Symbol;
                 if (memberSym is IFieldSymbol fieldSym)
-                {
                     AddFieldUsage(recVar, fieldSym.Id);
-                }
             }
 
             // Case 2: WITH Rec DO ... Field ...
-            foreach (var id in methodSyntax.Body.DescendantNodes().OfType<IdentifierNameSyntax>())
+            foreach (var id in body.DescendantNodes().OfType<IdentifierNameSyntax>())
             {
                 var sym = semanticModel.GetSymbolInfo(id, cancellationToken).Symbol;
                 if (sym is not IFieldSymbol fieldSym)
@@ -136,10 +148,8 @@ namespace CountITBCALCop.Design
                     continue;
 
                 var withTargetSym = semanticModel.GetSymbolInfo(withStmt.WithId, cancellationToken).Symbol;
-                if (withTargetSym is IVariableSymbol { Type: IRecordTypeSymbol recType } recVar && !recType.Temporary)
-                {
-                    AddFieldUsage(recVar, fieldSym.Id);
-                }
+                if (withTargetSym is IVariableSymbol { Type: IRecordTypeSymbol recType } recVar2 && !recType.Temporary)
+                    AddFieldUsage(recVar2, fieldSym.Id);
             }
 
             // records using > threshold fields => skip rule
@@ -155,12 +165,10 @@ namespace CountITBCALCop.Design
             foreach (var r in recordsUsingManyFields)
                 recordsToSkip.Add(r);
 
-            // ---------------------------------------------------------------------
             // PASS 2: apply rule unless the record is in 'recordsToSkip'
-            // ---------------------------------------------------------------------
             var hasSetLoadFields = new Dictionary<IVariableSymbol, bool>();
 
-            foreach (var statement in methodSyntax.Body.Statements)
+            foreach (var statement in body.Statements)
             {
                 foreach (var invocation in statement.DescendantNodes().OfType<InvocationExpressionSyntax>())
                 {
@@ -201,7 +209,7 @@ namespace CountITBCALCop.Design
 
                         if (!hasSetLoadFields[recVar])
                         {
-                            ctx.ReportDiagnostic(Diagnostic.Create(
+                            report(Diagnostic.Create(
                                 DiagnosticDescriptors.Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecords,
                                 invocation.GetLocation(),
                                 recVar.Name,
