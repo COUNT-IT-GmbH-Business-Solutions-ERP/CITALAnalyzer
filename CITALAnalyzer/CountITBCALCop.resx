@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root"
+    xmlns=""
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -59,18 +62,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AnalyzerPrefix" xml:space="preserve">
-  <!-- Prefix -->
+    <!-- Prefix -->
     <value>CI</value>
   </data>
   <!-- Rules -->
   <data name="Rule0000CheckProjectStructureAzureDevOpsDescription" xml:space="preserve">
-    <value>Project structure is not following official conventions (Azure DevOps).</value>
+    <value>Project structure is not following official conventions (Azure DevOps). {0} '{1}' should be under {2}. Current: {3}.</value>
   </data>
   <data name="Rule0000CheckProjectStructureAzureDevOpsFormat" xml:space="preserve">
-    <value>Project structure is not following official conventions (Azure DevOps).</value>
+    <value>Project structure is not following official conventions (Azure DevOps). {0} '{1}' should be under {2}. Current: {3}.</value>
   </data>
   <data name="Rule0000CheckProjectStructureAzureDevOpsTitle" xml:space="preserve">
-    <value>Project structure is not following official conventions (Azure DevOps).</value>
+    <value>Project structure is not following official conventions (Azure DevOps). {0} '{1}' should be under {2}. Current: {3}.</value>
   </data>
   <data name="Rule0002CheckForMissingCaptionsDescription" xml:space="preserve">
     <value>Caption is missing.</value>
@@ -162,7 +165,7 @@
   <data name="Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsDescription" xml:space="preserve">
     <value>SetLoadFields must always be used before fetching a record from the database.</value>
   </data>
-    <data name="Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsTitle" xml:space="preserve">
+  <data name="Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsTitle" xml:space="preserve">
     <value>Always use SetAutoCalcFields instead of CalcFields.</value>
   </data>
   <data name="Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsFormat" xml:space="preserve">
@@ -171,7 +174,7 @@
   <data name="Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsDescription" xml:space="preserve">
     <value>Always use SetAutoCalcFields instead of CalcFields.</value>
   </data>
-    <data name="Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterTitle" xml:space="preserve">
+  <data name="Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterTitle" xml:space="preserve">
     <value>When calculating the sum of a field in a filter, CalcSums must always be used.</value>
   </data>
   <data name="Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterFormat" xml:space="preserve">
@@ -180,7 +183,7 @@
   <data name="Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterDescription" xml:space="preserve">
     <value>When calculating the sum of a field in a filter, CalcSums must always be used.</value>
   </data>
-    <data name="Rule0014IfTextIsContinuouslyChangedUseTextBuilderTitle" xml:space="preserve">
+  <data name="Rule0014IfTextIsContinuouslyChangedUseTextBuilderTitle" xml:space="preserve">
     <value>If a text is continuously changed, the data type TextBuilder must be used.</value>
   </data>
   <data name="Rule0014IfTextIsContinuouslyChangedUseTextBuilderFormat" xml:space="preserve">
@@ -189,7 +192,7 @@
   <data name="Rule0014IfTextIsContinuouslyChangedUseTextBuilderDescription" xml:space="preserve">
     <value>If a text is continuously changed, the data type TextBuilder must be used.</value>
   </data>
-    <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldTitle" xml:space="preserve">
+  <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldTitle" xml:space="preserve">
     <value>Procedures must be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
   </data>
   <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldDescription" xml:space="preserve">

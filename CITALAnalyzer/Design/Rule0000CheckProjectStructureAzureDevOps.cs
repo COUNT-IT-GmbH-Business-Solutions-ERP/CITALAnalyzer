@@ -1,14 +1,16 @@
 ﻿using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
+using Microsoft.Dynamics.Nav.CodeAnalysis.Text;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.Dynamics.Nav.CodeAnalysis.Text; // already in your file
-
-// Rule0000CheckProjectStructureAzureDevOps
-// Project structure is not following official conventions (AzureDevOps).
 
 namespace CountITBCALCop.Design;
+
+// Rule0000CheckProjectStructureAzureDevOps
 
 [DiagnosticAnalyzer]
 public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
@@ -45,34 +47,94 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
         if (string.IsNullOrEmpty(filePath))
             return;
 
-        var path = filePath.Replace('\\', '/');
+        var fullPath = filePath.Replace('\\', '/');
 
-        var appMatch = Regex.Match(path, @"(?i)/(App|Test)/");
+        // Only check inside /App/ or /Test/
+        var appMatch = Regex.Match(fullPath, @"(?i)/(App|Test)/");
         if (!appMatch.Success)
             return;
 
-        if (IsInfraPath(path))
+        if (IsInfraPath(fullPath))
             return;
 
+        // Determine expected kind folder (Codeunit, EventSub, PageExt, ...)
         var expectedKindFolder = GetExpectedKindFolder(ctx);
         if (expectedKindFolder is null)
             return;
 
-        var expectedSegment = "/" + appMatch.Groups[1].Value + "/";
-        var ok = PathHasSegmentOrder(path, expectedSegment, expectedKindFolder);
+        var anchorName = appMatch.Groups[1].Value;           // "App" | "Test"
+        var anchorSeg = "/" + anchorName + "/";
 
+        var (projectName, currentRel) = ProjectRelative(fullPath, anchorSeg);
+
+        var idxAnchor = IndexOf(fullPath, anchorSeg);
+        if (idxAnchor < 0) return;
+        var after = fullPath.Substring(idxAnchor + anchorSeg.Length);
+        var parts = after.Split('/', System.StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length < 2) return; // at least "<Kind>/<File>" expected at the end
+
+        // Immediate parent must be the kind folder
+        var fileName = parts[^1];
+        var parentFolder = parts[^2];
+        var parentIsKind = parentFolder.Equals(expectedKindFolder, System.StringComparison.OrdinalIgnoreCase);
+
+        // There must be at least one folder between App/Test and the kind (Area required, Feature optional)
+        var parentIndex = parts.Length - 2;       
+        var hasArea = parentIndex >= 1;        
+
+        // Derive Area (and optional Feature) from namespace: company.project.area[.feature[...]]
+        var (area, feature) = GetAreaFeatureFromNamespace(ctx);
+
+        // Validate namespace-mapped folders if provided:
+        // - Area must appear somewhere before the kind
+        // - Feature (if provided) must appear after Area and before the kind
+        bool areaMatches = true, featureMatches = true;
+        if (!string.IsNullOrEmpty(area))
+        {
+            var idxArea = IndexOfPart(parts, area!, 0, parentIndex);
+            areaMatches = idxArea >= 0;
+
+            if (!string.IsNullOrEmpty(feature))
+            {
+                var idxFeature = IndexOfPart(parts, feature!, (idxArea >= 0 ? idxArea + 1 : 0), parentIndex);
+                featureMatches = idxFeature >= 0;
+            }
+        }
+
+        var ok = parentIsKind && hasArea && areaMatches && featureMatches;
         if (!ok)
         {
-            var location = FileLevelLocation(ctx); // file-level only, no squiggles
+            // Build expected project-relative pattern using namespace-derived segments when available
+            string expectedRel;
+            if (projectName is not null)
+            {
+                if (!string.IsNullOrEmpty(area) && !string.IsNullOrEmpty(feature))
+                    expectedRel = $"{projectName}/{anchorName}/{area}/{feature}/.../{expectedKindFolder}/";
+                else if (!string.IsNullOrEmpty(area))
+                    expectedRel = $"{projectName}/{anchorName}/{area}/.../{expectedKindFolder}/";
+                else
+                    expectedRel = $"{projectName}/{anchorName}/<Area>/.../{expectedKindFolder}/";
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(area) && !string.IsNullOrEmpty(feature))
+                    expectedRel = $"<Project>/{anchorName}/{area}/{feature}/.../{expectedKindFolder}/";
+                else if (!string.IsNullOrEmpty(area))
+                    expectedRel = $"<Project>/{anchorName}/{area}/.../{expectedKindFolder}/";
+                else
+                    expectedRel = $"<Project>/{anchorName}/<Area>/.../{expectedKindFolder}/";
+            }
+
+            var location = FileLevelLocation(ctx);
             var objectLabel = KindToLabel(ctx.Node.Kind);
-            var expected = $"<Project>/(App|Test)/<Area>/<SubArea>/{expectedKindFolder}/";
 
             ctx.ReportDiagnostic(Diagnostic.Create(
                 DiagnosticDescriptors.Rule0000CheckProjectStructureAzureDevOps,
                 location,
-                objectLabel,
-                expected,
-                path));
+                objectLabel,         
+                Path.GetFileName(filePath), 
+                expectedRel,          
+                currentRel));         
         }
     }
 
@@ -83,11 +145,11 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
     {
         if (ctx.Node.Kind == SyntaxKind.CodeunitObject)
         {
-            // EventSub if any [EventSubscriber] attribute is present
+            // treat codeunits with [EventSubscriber] anywhere as EventSub
             var containsSubscriber = ctx.Node
                 .DescendantNodes()
                 .Any(n => n.Kind == SyntaxKind.MemberAttribute &&
-                          n.ToString().IndexOf("EventSubscriber", StringComparison.OrdinalIgnoreCase) >= 0);
+                          n.ToString().IndexOf("EventSubscriber", System.StringComparison.OrdinalIgnoreCase) >= 0);
 
             return containsSubscriber ? "EventSub" : "Codeunit";
         }
@@ -134,31 +196,62 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
         _ => "Object"
     };
 
-    private static bool PathHasSegmentOrder(string fullPath, string appOrTestSeg, string kindFolder)
-    {
-        var idxApp = IndexOf(fullPath, appOrTestSeg);
-        if (idxApp < 0) return false;
-
-        var after = fullPath.Substring(idxApp + appOrTestSeg.Length);
-        var parts = after.Split('/', StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length < 3) return false;
-
-        for (int i = 0; i < parts.Length; i++)
-            if (parts[i].Equals(kindFolder, StringComparison.OrdinalIgnoreCase))
-                return i >= 2; // need <Area>/<SubArea>/ before the kind folder
-
-        return false;
-    }
-
     private static int IndexOf(string hay, string needle) =>
         CultureInfo.InvariantCulture.CompareInfo.IndexOf(hay, needle, CompareOptions.IgnoreCase);
 
+    private static int IndexOfPart(string[] parts, string value, int start, int endExclusive)
+    {
+        for (int i = start; i < endExclusive && i < parts.Length; i++)
+            if (parts[i].Equals(value, System.StringComparison.OrdinalIgnoreCase))
+                return i;
+        return -1;
+    }
 
     private static Location FileLevelLocation(SyntaxNodeAnalysisContext ctx)
     {
         var tree = ctx.Node.SyntaxTree!;
-        // 0-length span at file start → shows in Problems, no squiggle in editor
-        return Location.Create(tree, new TextSpan(0, 0));
+        var text = tree.GetText();
+        // EOF, zero-length → Problems entry only, no squiggle
+        return Location.Create(tree, new TextSpan(text.Length, 0));
     }
 
+    /// Extracts Area and optional Feature from the first namespace:
+    /// company.project.area[.feature[...]] → returns (area, featureOrNull)
+    private static (string? area, string? feature) GetAreaFeatureFromNamespace(SyntaxNodeAnalysisContext ctx)
+    {
+        var ns = ctx.Node.DescendantNodes().OfType<NamespaceDeclarationSyntax>().FirstOrDefault();
+        var name = ns?.Name?.ToString();
+        if (string.IsNullOrWhiteSpace(name))
+            return (null, null);
+
+        var segments = name.Split('.');
+        if (segments.Length >= 3)
+        {
+            var area = segments[2];
+            var feature = segments.Length >= 4 ? segments[3] : null;
+            return (area, feature);
+        }
+        return (null, null);
+    }
+
+    /// Returns (projectName, projectRelativePath) where projectRelativePath starts at the project folder.
+    /// Falls back to anchor-relative if project name cannot be found.
+    private static (string? projectName, string relative) ProjectRelative(string fullPath, string appOrTestSeg)
+    {
+        var idxAnchor = IndexOf(fullPath, appOrTestSeg);
+        if (idxAnchor < 0)
+            return (null, fullPath);
+
+        // previous '/' before '/App/' or '/Test/'
+        var prevSlash = fullPath.LastIndexOf('/', idxAnchor - 1);
+        if (prevSlash >= 0)
+        {
+            var rel = fullPath.Substring(prevSlash + 1); // "<Project>/App/.../File.al"
+            var projectName = fullPath.Substring(prevSlash + 1, idxAnchor - (prevSlash + 1)); // "<Project>"
+            return (projectName, rel);
+        }
+
+        // fallback: from anchor onward
+        return (null, fullPath.Substring(idxAnchor + 1));
+    }
 }
