@@ -72,12 +72,24 @@ public class Rule0015DefineProcedureAsSourceExpressionInPageField : DiagnosticAn
         if (modifiedGlobals.Count == 0)
             return;
 
-        // report fields whose SourceExpr references modified globals
+        // report fields whose SourceExpr (ONLY the header argument, not body/properties) references modified globals
         foreach (var pageField in ctx.Node.DescendantNodes().OfType<PageFieldSyntax>())
         {
+            // Determine the position of the opening brace of the field body, if any.
+            // We only consider identifiers that occur BEFORE this brace (i.e., in "field(Name; <SourceExpr>)").
+            var openBraceToken = pageField.OpenBraceToken;
+            var openBracePos = openBraceToken.IsMissing ? int.MaxValue : openBraceToken.FullSpan.Start;
+
+            // All identifier candidates under the field...
             var idCandidates = pageField.DescendantNodes().OfType<IdentifierNameSyntax>();
+
             foreach (var id in idCandidates)
             {
+                // Skip anything in the field BODY/properties (e.g., StyleExpr = StyleExprTxt;)
+                if (id.FullSpan.Start >= openBracePos)
+                    continue;
+
+                // Only care about identifiers that actually resolve to GLOBAL variables
                 var sym = model.GetSymbolInfo(id, ct).Symbol as IVariableSymbol;
                 if (sym is null || sym.Kind != SymbolKind.GlobalVariable)
                     continue;
@@ -85,6 +97,7 @@ public class Rule0015DefineProcedureAsSourceExpressionInPageField : DiagnosticAn
                 if (!modifiedGlobals.Contains(sym))
                     continue;
 
+                // At this point, a modified global is being used directly in the field header (SourceExpr)
                 ctx.ReportDiagnostic(Diagnostic.Create(
                     DiagnosticDescriptors.Rule0015DefineProcedureAsSourceExpressionInPageField,
                     id.GetLocation()));
