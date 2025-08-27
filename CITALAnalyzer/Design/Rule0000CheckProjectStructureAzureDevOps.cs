@@ -57,12 +57,16 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
         if (IsInfraPath(fullPath))
             return;
 
-        // Determine expected kind folder (Codeunit, EventSub, PageExt, ...)
-        var expectedKindFolder = GetExpectedKindFolder(ctx);
-        if (expectedKindFolder is null)
+        // Determine expected kind folder(s)
+        var expectedKindFolders = GetExpectedKindFolders(ctx);
+        if (expectedKindFolders is null || expectedKindFolders.Count == 0)
             return;
 
-        var anchorName = appMatch.Groups[1].Value;           // "App" | "Test"
+        var expectedKindDisplay = expectedKindFolders.Count == 1
+            ? expectedKindFolders[0]
+            : "{" + string.Join("|", expectedKindFolders) + "}";
+
+        var anchorName = appMatch.Groups[1].Value;          
         var anchorSeg = "/" + anchorName + "/";
 
         var (projectName, currentRel) = ProjectRelative(fullPath, anchorSeg);
@@ -73,21 +77,18 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
         var parts = after.Split('/', System.StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length < 2) return; // at least "<Kind>/<File>" expected at the end
 
-        // Immediate parent must be the kind folder
+        // Immediate parent must be one of the allowed kind folders
         var fileName = parts[^1];
         var parentFolder = parts[^2];
-        var parentIsKind = parentFolder.Equals(expectedKindFolder, System.StringComparison.OrdinalIgnoreCase);
+        var parentIsKind = expectedKindFolders.Any(k => parentFolder.Equals(k, StringComparison.OrdinalIgnoreCase));
 
-        // There must be at least one folder between App/Test and the kind (Area required, Feature optional)
-        var parentIndex = parts.Length - 2;       
-        var hasArea = parentIndex >= 1;        
+        var parentIndex = parts.Length - 2;
+        var hasArea = parentIndex >= 1;
 
         // Derive Area (and optional Feature) from namespace: company.project.area[.feature[...]]
         var (area, feature) = GetAreaFeatureFromNamespace(ctx);
 
         // Validate namespace-mapped folders if provided:
-        // - Area must appear somewhere before the kind
-        // - Feature (if provided) must appear after Area and before the kind
         bool areaMatches = true, featureMatches = true;
         if (!string.IsNullOrEmpty(area))
         {
@@ -104,25 +105,24 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
         var ok = parentIsKind && hasArea && areaMatches && featureMatches;
         if (!ok)
         {
-            // Build expected project-relative pattern using namespace-derived segments when available
             string expectedRel;
             if (projectName is not null)
             {
                 if (!string.IsNullOrEmpty(area) && !string.IsNullOrEmpty(feature))
-                    expectedRel = $"{projectName}/{anchorName}/{area}/{feature}/.../{expectedKindFolder}/";
+                    expectedRel = $"{projectName}/{anchorName}/{area}/{feature}/.../{expectedKindDisplay}/";
                 else if (!string.IsNullOrEmpty(area))
-                    expectedRel = $"{projectName}/{anchorName}/{area}/.../{expectedKindFolder}/";
+                    expectedRel = $"{projectName}/{anchorName}/{area}/.../{expectedKindDisplay}/";
                 else
-                    expectedRel = $"{projectName}/{anchorName}/<Area>/.../{expectedKindFolder}/";
+                    expectedRel = $"{projectName}/{anchorName}/<Area>/.../{expectedKindDisplay}/";
             }
             else
             {
                 if (!string.IsNullOrEmpty(area) && !string.IsNullOrEmpty(feature))
-                    expectedRel = $"<Project>/{anchorName}/{area}/{feature}/.../{expectedKindFolder}/";
+                    expectedRel = $"<Project>/{anchorName}/{area}/{feature}/.../{expectedKindDisplay}/";
                 else if (!string.IsNullOrEmpty(area))
-                    expectedRel = $"<Project>/{anchorName}/{area}/.../{expectedKindFolder}/";
+                    expectedRel = $"<Project>/{anchorName}/{area}/.../{expectedKindDisplay}/";
                 else
-                    expectedRel = $"<Project>/{anchorName}/<Area>/.../{expectedKindFolder}/";
+                    expectedRel = $"<Project>/{anchorName}/<Area>/.../{expectedKindDisplay}/";
             }
 
             var location = FileLevelLocation(ctx);
@@ -131,17 +131,18 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
             ctx.ReportDiagnostic(Diagnostic.Create(
                 DiagnosticDescriptors.Rule0000CheckProjectStructureAzureDevOps,
                 location,
-                objectLabel,         
-                Path.GetFileName(filePath), 
-                expectedRel,          
-                currentRel));         
+                objectLabel,
+                Path.GetFileName(filePath),
+                expectedRel,
+                currentRel));
         }
     }
 
     private static bool IsInfraPath(string path) =>
         Regex.IsMatch(path, @"(?i)/(App|Test)/(\.vscode|\.alpackages|\.altestrunner|\.snapshots|Translations)(/|$)");
 
-    private static string? GetExpectedKindFolder(SyntaxNodeAnalysisContext ctx)
+    // Returns the set of allowed folder names for the object kind.
+    private static List<string>? GetExpectedKindFolders(SyntaxNodeAnalysisContext ctx)
     {
         if (ctx.Node.Kind == SyntaxKind.CodeunitObject)
         {
@@ -149,28 +150,31 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
             var containsSubscriber = ctx.Node
                 .DescendantNodes()
                 .Any(n => n.Kind == SyntaxKind.MemberAttribute &&
-                          n.ToString().IndexOf("EventSubscriber", System.StringComparison.OrdinalIgnoreCase) >= 0);
+                          n.ToString().IndexOf("EventSubscriber", StringComparison.OrdinalIgnoreCase) >= 0);
 
-            return containsSubscriber ? "EventSub" : "Codeunit";
+            if (containsSubscriber)
+                return new List<string> { "EventSub" };
+
+            return new List<string> { "Codeunit", "Helper" };
         }
 
         return ctx.Node.Kind switch
         {
-            SyntaxKind.TableObject => "Table",
-            SyntaxKind.TableExtensionObject => "TableExt",
-            SyntaxKind.PageObject => "Page",
-            SyntaxKind.PageExtensionObject => "PageExt",
-            SyntaxKind.ReportObject => "Report",
-            SyntaxKind.QueryObject => "Query",
-            SyntaxKind.XmlPortObject => "XmlPort",
-            SyntaxKind.ControlAddInObject => "ControlAddIn",
-            SyntaxKind.ReportExtensionObject => "ReportExtension",
-            SyntaxKind.ProfileObject => "Profile",
-            SyntaxKind.ProfileExtensionObject => "ProfileExtension",
-            SyntaxKind.PageCustomizationObject => "PageCustomization",
-            SyntaxKind.Interface => "Interface",
-            SyntaxKind.EnumType => "Enum",
-            SyntaxKind.EnumExtensionType => "EnumExtension",
+            SyntaxKind.TableObject => new List<string> { "Table" },
+            SyntaxKind.TableExtensionObject => new List<string> { "TableExt" },
+            SyntaxKind.PageObject => new List<string> { "Page", "APIPage" },
+            SyntaxKind.PageExtensionObject => new List<string> { "PageExt" },
+            SyntaxKind.ReportObject => new List<string> { "Report" },
+            SyntaxKind.QueryObject => new List<string> { "Query" },
+            SyntaxKind.XmlPortObject => new List<string> { "XmlPort" },
+            SyntaxKind.ControlAddInObject => new List<string> { "ControlAddIn" },
+            SyntaxKind.ReportExtensionObject => new List<string> { "ReportExt" },
+            SyntaxKind.ProfileObject => new List<string> { "Profile" },
+            SyntaxKind.ProfileExtensionObject => new List<string> { "ProfileExt" },
+            SyntaxKind.PageCustomizationObject => new List<string> { "PageCustomization" },
+            SyntaxKind.Interface => new List<string> { "Interface" },
+            SyntaxKind.EnumType => new List<string> { "Enum" },
+            SyntaxKind.EnumExtensionType => new List<string> { "EnumExt" },
             _ => null
         };
     }
@@ -178,21 +182,21 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
     private static string KindToLabel(SyntaxKind kind) => kind switch
     {
         SyntaxKind.TableObject => "Table",
-        SyntaxKind.TableExtensionObject => "TableExtension",
+        SyntaxKind.TableExtensionObject => "TableExt",
         SyntaxKind.PageObject => "Page",
-        SyntaxKind.PageExtensionObject => "PageExtension",
+        SyntaxKind.PageExtensionObject => "PageExt",
         SyntaxKind.ReportObject => "Report",
         SyntaxKind.QueryObject => "Query",
         SyntaxKind.XmlPortObject => "XmlPort",
         SyntaxKind.ControlAddInObject => "ControlAddIn",
-        SyntaxKind.ReportExtensionObject => "ReportExtension",
+        SyntaxKind.ReportExtensionObject => "ReportExt",
         SyntaxKind.ProfileObject => "Profile",
-        SyntaxKind.ProfileExtensionObject => "ProfileExtension",
+        SyntaxKind.ProfileExtensionObject => "ProfileExt",
         SyntaxKind.PageCustomizationObject => "PageCustomization",
         SyntaxKind.CodeunitObject => "Codeunit",
         SyntaxKind.Interface => "Interface",
         SyntaxKind.EnumType => "Enum",
-        SyntaxKind.EnumExtensionType => "EnumExtension",
+        SyntaxKind.EnumExtensionType => "EnumExt",
         _ => "Object"
     };
 
@@ -202,7 +206,7 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
     private static int IndexOfPart(string[] parts, string value, int start, int endExclusive)
     {
         for (int i = start; i < endExclusive && i < parts.Length; i++)
-            if (parts[i].Equals(value, System.StringComparison.OrdinalIgnoreCase))
+            if (parts[i].Equals(value, StringComparison.OrdinalIgnoreCase))
                 return i;
         return -1;
     }
@@ -211,12 +215,10 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
     {
         var tree = ctx.Node.SyntaxTree!;
         var text = tree.GetText();
-        // EOF, zero-length → Problems entry only, no squiggle
         return Location.Create(tree, new TextSpan(text.Length, 0));
     }
 
-    /// Extracts Area and optional Feature from the first namespace:
-    /// company.project.area[.feature[...]] → returns (area, featureOrNull)
+    // Extracts Area and optional Feature from the first namespace:
     private static (string? area, string? feature) GetAreaFeatureFromNamespace(SyntaxNodeAnalysisContext ctx)
     {
         var ns = ctx.Node.DescendantNodes().OfType<NamespaceDeclarationSyntax>().FirstOrDefault();
@@ -234,8 +236,7 @@ public class Rule0000CheckProjectStructureAzureDevOps : DiagnosticAnalyzer
         return (null, null);
     }
 
-    /// Returns (projectName, projectRelativePath) where projectRelativePath starts at the project folder.
-    /// Falls back to anchor-relative if project name cannot be found.
+    // Returns (projectName, projectRelativePath) where projectRelativePath starts at the project folder.
     private static (string? projectName, string relative) ProjectRelative(string fullPath, string appOrTestSeg)
     {
         var idxAnchor = IndexOf(fullPath, appOrTestSeg);
