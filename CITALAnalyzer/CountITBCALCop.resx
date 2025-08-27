@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root"
+    xmlns=""
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AnalyzerPrefix" xml:space="preserve">
+    <!-- Prefix -->
+    <value>CI</value>
+  </data>
+  <!-- Rules -->
+  <data name="Rule0000CheckProjectStructureAzureDevOpsDescription" xml:space="preserve">
+    <value>Project structure is not following official conventions (Azure DevOps). {0} '{1}' should be under {2}. Current: {3}.</value>
+  </data>
+  <data name="Rule0000CheckProjectStructureAzureDevOpsFormat" xml:space="preserve">
+    <value>Project structure is not following official conventions (Azure DevOps). {0} '{1}' should be under {2}. Current: {3}.</value>
+  </data>
+  <data name="Rule0000CheckProjectStructureAzureDevOpsTitle" xml:space="preserve">
+    <value>Project structure is not following official conventions (Azure DevOps). {0} '{1}' should be under {2}. Current: {3}.</value>
+  </data>
+  <data name="Rule0002CheckForMissingCaptionsDescription" xml:space="preserve">
+    <value>Caption is missing.</value>
+  </data>
+  <data name="Rule0002CheckForMissingCaptionsFormat" xml:space="preserve">
+    <value>Caption is missing.</value>
+  </data>
+  <data name="Rule0002CheckForMissingCaptionsTitle" xml:space="preserve">
+    <value>Caption is missing.</value>
+  </data>
+  <data name="Rule0003CheckIfDefaultDataClassificationDescription" xml:space="preserve">
+    <value>Data Classification is equal to the default value. Remove to reduce redundancy.</value>
+  </data>
+  <data name="Rule0003CheckIfDefaultDataClassificationFormat" xml:space="preserve">
+    <value>Data Classification is equal to the default value. Remove to reduce redundancy.</value>
+  </data>
+  <data name="Rule0003CheckIfDefaultDataClassificationTitle" xml:space="preserve">
+    <value>Data Classification is equal to the default value. Remove to reduce redundancy.</value>
+  </data>
+  <data name="Rule0004NameOfEventSubscriberHasToMatchEventDescription" xml:space="preserve">
+    <value>The name of the event subscriber must match the name of the event it subscribes to. In case of subscribing to a specific element, add the name of the element before the eventname and separate them by using '_'.</value>
+  </data>
+  <data name="Rule0004NameOfEventSubscriberHasToMatchEventFormat" xml:space="preserve">
+    <value>The name of the event subscriber must match the name of the event it subscribes to. In case of subscribing to a specific element, add the name of the element before the eventname and separate them by using '_'.</value>
+  </data>
+  <data name="Rule0004NameOfEventSubscriberHasToMatchEventTitle" xml:space="preserve">
+    <value>The name of the event subscriber must match the name of the event it subscribes to. In case of subscribing to a specific element, add the name of the element before the eventname and separate them by using '_'.</value>
+  </data>
+  <data name="Rule0005CheckForUnnecessaryParamsInEventSubDescription" xml:space="preserve">
+    <value>An event subscriber must only receive the parameters it actually needs.</value>
+  </data>
+  <data name="Rule0005CheckForUnnecessaryParamsInEventSubFormat" xml:space="preserve">
+    <value>An event subscriber must only receive the parameters it actually needs.</value>
+  </data>
+  <data name="Rule0005CheckForUnnecessaryParamsInEventSubTitle" xml:space="preserve">
+    <value>An event subscriber must only receive the parameters it actually needs.</value>
+  </data>
+  <data name="Rule0006EmptyCaptionLockedTitle" xml:space="preserve">
+    <value>Empty captions must be locked.</value>
+  </data>
+  <data name="Rule0006EmptyCaptionLockedFormat" xml:space="preserve">
+    <value>Empty captions must be locked.</value>
+  </data>
+  <data name="Rule0006EmptyCaptionLockedDescription" xml:space="preserve">
+    <value>Empty captions must be locked.</value>
+  </data>
+  <data name="Rule0007VariablesNameContainsALObjectAndNoSpecialCharsTitle" xml:space="preserve">
+    <value>Variables must contain the name of the AL object but no special characters or whitespaces.</value>
+  </data>
+  <data name="Rule0007VariablesNameContainsALObjectAndNoSpecialCharsFormat" xml:space="preserve">
+    <value>Variables must contain the name of the AL object but no special characters or whitespaces.</value>
+  </data>
+  <data name="Rule0007VariablesNameContainsALObjectAndNoSpecialCharsDescription" xml:space="preserve">
+    <value>Variables must contain the name of the AL object but no special characters or whitespaces.</value>
+  </data>
+  <data name="Rule0008EventSubsInCorrectCodeunitTitle" xml:space="preserve">
+    <value>EventSubscribers must always be placed in a Codeunit that has the same name as the object to which the event belongs.</value>
+  </data>
+  <data name="Rule0008EventSubsInCorrectCodeunitFormat" xml:space="preserve">
+    <value>EventSubscribers must always be placed in a Codeunit that has the same name as the object to which the event belongs.</value>
+  </data>
+  <data name="Rule0008EventSubsInCorrectCodeunitDescription" xml:space="preserve">
+    <value>EventSubscribers must always be placed in a Codeunit that has the same name as the object to which the event belongs.</value>
+  </data>
+  <data name="Rule0009CheckForAddMoveBeforeAfterinPageExtTitle" xml:space="preserve">
+    <value>It is not allowed to use 'addbefore', 'addafter', 'movebefore' or 'moveafter' in Page Extensions.</value>
+  </data>
+  <data name="Rule0009CheckForAddMoveBeforeAfterinPageExtFormat" xml:space="preserve">
+    <value>It is not allowed to use 'addbefore', 'addafter', 'movebefore' or 'moveafter' in Page Extensions.</value>
+  </data>
+  <data name="Rule0009CheckForAddMoveBeforeAfterinPageExtDescription" xml:space="preserve">
+    <value>It is not allowed to use 'addbefore', 'addafter', 'movebefore' or 'moveafter' in Page Extensions.</value>
+  </data>
+  <data name="Rule0010CallByReferenceOnlyIfVariableChangedInProcedureTitle" xml:space="preserve">
+    <value>Call by reference may only be used if the variable is modified within the procedure.</value>
+  </data>
+  <data name="Rule0010CallByReferenceOnlyIfVariableChangedInProcedureFormat" xml:space="preserve">
+    <value>Call by reference may only be used if the variable is modified within the procedure.</value>
+  </data>
+  <data name="Rule0010CallByReferenceOnlyIfVariableChangedInProcedureDescription" xml:space="preserve">
+    <value>Call by reference may only be used if the variable is modified within the procedure.</value>
+  </data>
+  <data name="Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsTitle" xml:space="preserve">
+    <value>SetLoadFields must always be used before fetching a record from the database.</value>
+  </data>
+  <data name="Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsFormat" xml:space="preserve">
+    <value>SetLoadFields must always be used before fetching a record from the database.</value>
+  </data>
+  <data name="Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsDescription" xml:space="preserve">
+    <value>SetLoadFields must always be used before fetching a record from the database.</value>
+  </data>
+  <data name="Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsTitle" xml:space="preserve">
+    <value>Always use SetAutoCalcFields instead of CalcFields.</value>
+  </data>
+  <data name="Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsFormat" xml:space="preserve">
+    <value>Always use SetAutoCalcFields instead of CalcFields.</value>
+  </data>
+  <data name="Rule0012UseSetAutoCalcFieldsInsteadOfCalcFieldsDescription" xml:space="preserve">
+    <value>Always use SetAutoCalcFields instead of CalcFields.</value>
+  </data>
+  <data name="Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterTitle" xml:space="preserve">
+    <value>When calculating the sum of a field in a filter, CalcSums must always be used.</value>
+  </data>
+  <data name="Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterFormat" xml:space="preserve">
+    <value>When calculating the sum of a field in a filter, CalcSums must always be used.</value>
+  </data>
+  <data name="Rule0013UseCalcSumWhenCalculationSumOfFieldInFilterDescription" xml:space="preserve">
+    <value>When calculating the sum of a field in a filter, CalcSums must always be used.</value>
+  </data>
+  <data name="Rule0014IfTextIsContinuouslyChangedUseTextBuilderTitle" xml:space="preserve">
+    <value>If a text is continuously changed, the data type TextBuilder must be used.</value>
+  </data>
+  <data name="Rule0014IfTextIsContinuouslyChangedUseTextBuilderFormat" xml:space="preserve">
+    <value>If a text is continuously changed, the data type TextBuilder must be used.</value>
+  </data>
+  <data name="Rule0014IfTextIsContinuouslyChangedUseTextBuilderDescription" xml:space="preserve">
+    <value>If a text is continuously changed, the data type TextBuilder must be used.</value>
+  </data>
+  <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldTitle" xml:space="preserve">
+    <value>Procedures must be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
+  </data>
+  <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldDescription" xml:space="preserve">
+    <value>Procedures must be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
+  </data>
+  <data name="Rule0015DefineProcedureAsSourceExpressionInPageFieldFormat" xml:space="preserve">
+    <value>Procedures must be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord().</value>
+  </data>
+</root>
