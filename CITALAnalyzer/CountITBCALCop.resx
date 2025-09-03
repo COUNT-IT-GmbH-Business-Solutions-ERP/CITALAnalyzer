@@ -148,13 +148,13 @@
     <value>It is not allowed to use 'addbefore', 'addafter', 'movebefore' or 'moveafter' in Page Extensions.</value>
   </data>
   <data name="Rule0010CallByReferenceOnlyIfVariableChangedInProcedureTitle" xml:space="preserve">
-    <value>Call by reference may only be used if the variable is modified within the procedure.</value>
+    <value>Call by reference may only be used if the variable is modified within the procedure. Escape the rule by making a comment including the name of the parameter and the reason for using call by reference for this case.</value>
   </data>
   <data name="Rule0010CallByReferenceOnlyIfVariableChangedInProcedureFormat" xml:space="preserve">
-    <value>Call by reference may only be used if the variable is modified within the procedure.</value>
+    <value>Call by reference may only be used if the variable is modified within the procedure. Escape the rule by making a comment including the name of the parameter and the reason for using call by reference for this case.</value>
   </data>
   <data name="Rule0010CallByReferenceOnlyIfVariableChangedInProcedureDescription" xml:space="preserve">
-    <value>Call by reference may only be used if the variable is modified within the procedure.</value>
+    <value>Call by reference may only be used if the variable is modified within the procedure. Escape the rule by making a comment including the name of the parameter and the reason for using call by reference for this case.</value>
   </data>
   <data name="Rule0011AlwaysUseSetLoadFieldsWhenFetchingRecordsTitle" xml:space="preserve">
     <value>SetLoadFields must always be used before fetching a record from the database.</value>
