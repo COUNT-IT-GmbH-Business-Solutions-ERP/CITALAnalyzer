@@ -83,7 +83,9 @@ You can find them here:
 
 C:\Users\\\<YourUser>\\.vscode\extensions\ms-dynamics-smb.al-\<version>\bin\Analyzers
 
-Note: After an update of Business Central these files need to be replaced with the new ones. Just replace the files in the lib folder with the ones in the Analyzers folder.
+Note: After an update* of the ms-dynamics-smb.al these files need to be replaced with the new ones. Just replace the files in the lib folder with the ones in the Analyzers folder.
+
+https://marketplace.visualstudio.com/items?itemName=ms-dynamics-smb.al (*if this extension gets an update)
 
 #### 4. Build the Project
 
@@ -119,7 +121,11 @@ Add the DLL to the AL Code Analyzer settings by modifying your AL settings JSON 
 
 Reload or restart Visual Studio Code to apply the changes. Your custom analyzer should now be active and running alongside the built-in analyzers.
 
-### Common errors & tips and tricks
+### Common errors
+
+If the Analyzer is not Working anymore, try to update the dll dependencies (3 files). See 'Project Setup and Compilation Guide - 3. Update Dependencies'.
+
+### Tips and tricks
 
 #### choosing the right RegisterAction
 
