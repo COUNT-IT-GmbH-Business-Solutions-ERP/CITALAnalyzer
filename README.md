@@ -121,11 +121,23 @@ Add the DLL to the AL Code Analyzer settings by modifying your AL settings JSON 
 
 Reload or restart Visual Studio Code to apply the changes. Your custom analyzer should now be active and running alongside the built-in analyzers.
 
-### Common errors
+## Debugging
+
+There are 3 essential steps for debugging the Analyzer.
+
+1. Build the Projects DLL like described above.
+2. include the DLL in the `al.CodeAnalyzers` array in `settings.json`.
+3. Attach to the Process `Microsoft.Dynamics.Nav.EditorServices.Host`
+    Tip for an easier experience make sure that you only have one `Visual Studio Code` instance running as each instance will have its own `Microsoft.Dynamics.Nav.EditorServices.Host`
+
+Now any Breakpoint set will be respected.
+    
+
+## Common errors
 
 If the Analyzer is not Working anymore, try to update the dll dependencies (3 files). See 'Project Setup and Compilation Guide - 3. Update Dependencies'.
 
-### Tips and tricks
+## Tips and tricks
 
 #### choosing the right RegisterAction
 
