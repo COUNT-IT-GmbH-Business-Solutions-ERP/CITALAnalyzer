@@ -127,7 +127,7 @@ There are 3 essential steps for debugging the Analyzer.
 
 1. Build the Projects DLL like described above.
 2. include the DLL in the `al.CodeAnalyzers` array in `settings.json`.
-3. Attach to the Process `Microsoft.Dynamics.Nav.EditorServices.Host`
+3. Attach to the Process `Microsoft.Dynamics.Nav.EditorServices.Host`  
     Tip for an easier experience make sure that you only have one `Visual Studio Code` instance running as each instance will have its own `Microsoft.Dynamics.Nav.EditorServices.Host`
 
 Now any Breakpoint set will be respected.
