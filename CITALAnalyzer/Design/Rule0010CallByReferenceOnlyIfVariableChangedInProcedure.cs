@@ -6,6 +6,8 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 // Editing CIG0010 ‐ call by reference, only when modifying variable
 // "Call by reference may only be used if the variable is modified within the procedure."
 
+// Exceptions: IntegrationEvents
+
 // can be disabled by using a comment with the name of the variable and the word filter
 
 namespace CountITBCALCop.Design;
@@ -29,7 +31,7 @@ public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : Diagnosti
         if (methodSyntax.ParameterList == null || methodSyntax.ParameterList.Parameters.Count == 0)
             return;
 
-        if (IsEventPublisher(ctx))
+        if (IsIntegrationEvent(ctx))
         {
             return;
         }
@@ -124,22 +126,17 @@ public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : Diagnosti
         }
     }
 
-    private static bool IsEventPublisher(CodeBlockAnalysisContext ctx)
+    private static bool IsIntegrationEvent(CodeBlockAnalysisContext ctx)
     {
-        // Retrieve Symbol of this CodeBlock
-        // TODO: If this is not the correct way to get the Symbol rewrite the Register in Initialize to hook into MethodSymbols
-        if (ctx.OwningSymbol is not IMethodSymbol owningSymbol)
-        {
-            // This is currently Undefined Behaviour if the Owning Symbol of a CodeBlock is not a Method 
+        if (ctx.CodeBlock is not MethodDeclarationSyntax methodSyntax)
             return false;
-        }
 
-        // return early if this is an EventPublisher
-        if (owningSymbol.IsEvent)
-        {
-            return true;
-        }
+        var integrationEventAttribute = methodSyntax.Attributes
+            .FirstOrDefault(attr =>
+                SemanticFacts.IsSameName(
+                    attr.GetIdentifierOrLiteralValue() ?? "",
+                    "IntegrationEvent"));
 
-        return false;
+        return integrationEventAttribute != null;
     }
 }
