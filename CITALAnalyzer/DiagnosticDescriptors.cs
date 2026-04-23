@@ -14,6 +14,16 @@ public static class DiagnosticDescriptors
         description: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureAzureDevOpsDescription"),
         helpLinkUri: "");
 
+    public static readonly DiagnosticDescriptor Rule0001VariableNamesOnlyContainPrefixIfNecessary = new(
+        id: CountITBCALCopAnalyzers.AnalyzerPrefix + "0001",
+        title: CountITBCALCopAnalyzers.GetLocalizableString("Rule0001VariableNamesOnlyContainPrefixIfNecessaryTitle"),
+        messageFormat: CountITBCALCopAnalyzers.GetLocalizableString("Rule0001VariableNamesOnlyContainPrefixIfNecessaryFormat"),
+        category: "Design",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: CountITBCALCopAnalyzers.GetLocalizableString("Rule0001VariableNamesOnlyContainPrefixIfNecessaryDescription"),
+        helpLinkUri: "");
+
     public static readonly DiagnosticDescriptor Rule0002CheckForMissingCaptions = new(
         id: CountITBCALCopAnalyzers.AnalyzerPrefix + "0002",
         title: CountITBCALCopAnalyzers.GetLocalizableString("Rule0002CheckForMissingCaptionsTitle"),

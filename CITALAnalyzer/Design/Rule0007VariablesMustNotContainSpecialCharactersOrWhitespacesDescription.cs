@@ -56,7 +56,7 @@ public class Rule0007VariablesNameContainsALObjectAndNoSpecialChars : Diagnostic
                 ctx.ReportDiagnostic(Diagnostic.Create(
                     DiagnosticDescriptors.Rule0007VariablesNameContainsALObjectAndNoSpecialChars,
                     symbol.GetLocation()));
-            }
+        }
     }
         
 }

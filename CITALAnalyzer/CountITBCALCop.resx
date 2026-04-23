@@ -75,6 +75,16 @@
   <data name="Rule0000CheckProjectStructureAzureDevOpsTitle" xml:space="preserve">
     <value>Project structure is not following official conventions (Azure DevOps). {0} '{1}' should be under {2}. Current: {3}.</value>
   </data>
+
+    <data name="Rule0001VariableNamesOnlyContainPrefixIfNecessaryDescription" xml:space="preserve">
+    <value>Variable names must not contain a prefix unless doing so is necessary to avoid a conflict.</value>
+  </data>
+  <data name="Rule0001VariableNamesOnlyContainPrefixIfNecessaryFormat" xml:space="preserve">
+    <value>Variable names must not contain a prefix unless doing so is necessary to avoid a conflict.</value>
+  </data>
+  <data name="Rule0001VariableNamesOnlyContainPrefixIfNecessaryTitle" xml:space="preserve">
+    <value>Variable names must not contain a prefix unless doing so is necessary to avoid a conflict.</value>
+  </data>
   <data name="Rule0002CheckForMissingCaptionsDescription" xml:space="preserve">
     <value>Caption is missing.</value>
   </data>

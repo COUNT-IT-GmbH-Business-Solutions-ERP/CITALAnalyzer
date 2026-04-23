@@ -32,6 +32,21 @@ public partial class HelperFunctions
         return name;
     }
 
+    public static string GetPrefix(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            return string.Empty;
+
+        var match = PrefixCaptureRegex().Match(name);
+        if (match.Success)
+            return match.Groups[1].Value;
+
+        return string.Empty;
+    }
+
+    public static bool HasPrefix(string name) =>
+        !string.IsNullOrEmpty(GetPrefix(name));
+
     [GeneratedRegex("[^a-zA-Z0-9]", RegexOptions.Compiled)]
     private static partial Regex NonAlphaNumericalRegex();
 

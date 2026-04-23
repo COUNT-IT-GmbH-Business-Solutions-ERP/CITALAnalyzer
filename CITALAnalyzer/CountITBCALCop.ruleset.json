@@ -7,6 +7,11 @@
       "justification": "Project structure is not following official conventions (Azure DevOps)."
     },
     {
+      "id": "CI0001",
+      "action": "Warning",
+      "justification": "Variable names must not contain a prefix unless doing so is necessary to avoid a conflict."
+    },
+    {
       "id": "CI0002",
       "action": "Warning",
       "justification": "Caption is missing."
@@ -56,22 +61,22 @@
       "action": "Warning",
       "justification": "SetLoadFields must always be used before fetching a record from the database."
     },
-        {
+    {
       "id": "CI0012",
       "action": "Warning",
       "justification": "Always use SetAutoCalcFields instead of CalcFields."
     },
-        {
+    {
       "id": "CI0013",
       "action": "Warning",
       "justification": "When calculating the sum of a field in a filter, CalcSums must always be used."
     },
-        {
+    {
       "id": "CI0014",
       "action": "Warning",
       "justification": "If a text is continuously changed, the data type TextBuilder must be used."
     },
-        {
+    {
       "id": "CI0015",
       "action": "Warning",
       "justification": "Procedures should be specified directly as a Source Expression in a Page Field, not in OnAfterGetRecord()."
