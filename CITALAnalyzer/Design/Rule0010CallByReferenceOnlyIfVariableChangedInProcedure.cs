@@ -29,6 +29,11 @@ public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : Diagnosti
         if (methodSyntax.ParameterList == null || methodSyntax.ParameterList.Parameters.Count == 0)
             return;
 
+        if (IsEventPublisher(ctx))
+        {
+            return;
+        }
+
         var semanticModel = ctx.SemanticModel;
         var cancellationToken = ctx.CancellationToken;
 
@@ -117,5 +122,24 @@ public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : Diagnosti
                     parameterSyntax.GetLocation()));
             }
         }
+    }
+
+    private static bool IsEventPublisher(CodeBlockAnalysisContext ctx)
+    {
+        // Retrieve Symbol of this CodeBlock
+        // TODO: If this is not the correct way to get the Symbol rewrite the Register in Initialize to hook into MethodSymbols
+        if (ctx.OwningSymbol is not IMethodSymbol owningSymbol)
+        {
+            // This is currently Undefined Behaviour if the Owning Symbol of a CodeBlock is not a Method 
+            return false;
+        }
+
+        // return early if this is an EventPublisher
+        if (owningSymbol.IsEvent)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
