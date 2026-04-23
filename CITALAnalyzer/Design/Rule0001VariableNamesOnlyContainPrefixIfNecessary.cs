@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
+﻿using System.Collections.Immutable;
 using CountITBCALCop.Helpers;
 using Microsoft.Dynamics.Nav.CodeAnalysis;
 using Microsoft.Dynamics.Nav.CodeAnalysis.Diagnostics;
@@ -84,8 +82,7 @@ public class Rule0001VariableNamesOnlyContainPrefixIfNecessary : DiagnosticAnaly
             {
                 ctx.ReportDiagnostic(Diagnostic.Create(
                     DiagnosticDescriptors.Rule0001VariableNamesOnlyContainPrefixIfNecessary,
-                    v.GetLocation(),
-                    v.Name));
+                    v.GetLocation()));
             }
         }
     }
