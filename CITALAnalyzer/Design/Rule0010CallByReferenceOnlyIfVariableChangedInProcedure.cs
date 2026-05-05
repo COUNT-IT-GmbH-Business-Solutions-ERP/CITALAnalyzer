@@ -6,6 +6,8 @@ using Microsoft.Dynamics.Nav.CodeAnalysis.Syntax;
 // Editing CIG0010 ‐ call by reference, only when modifying variable
 // "Call by reference may only be used if the variable is modified within the procedure."
 
+// Exceptions: IntegrationEvents
+
 // can be disabled by using a comment with the name of the variable and the word filter
 
 namespace CountITBCALCop.Design;
@@ -28,6 +30,11 @@ public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : Diagnosti
 
         if (methodSyntax.ParameterList == null || methodSyntax.ParameterList.Parameters.Count == 0)
             return;
+
+        if (IsIntegrationEvent(ctx))
+        {
+            return;
+        }
 
         var semanticModel = ctx.SemanticModel;
         var cancellationToken = ctx.CancellationToken;
@@ -117,5 +124,19 @@ public class Rule0010CallByReferenceOnlyIfVariableChangedInProcedure : Diagnosti
                     parameterSyntax.GetLocation()));
             }
         }
+    }
+
+    private static bool IsIntegrationEvent(CodeBlockAnalysisContext ctx)
+    {
+        if (ctx.CodeBlock is not MethodDeclarationSyntax methodSyntax)
+            return false;
+
+        var integrationEventAttribute = methodSyntax.Attributes
+            .FirstOrDefault(attr =>
+                SemanticFacts.IsSameName(
+                    attr.GetIdentifierOrLiteralValue() ?? "",
+                    "IntegrationEvent"));
+
+        return integrationEventAttribute != null;
     }
 }

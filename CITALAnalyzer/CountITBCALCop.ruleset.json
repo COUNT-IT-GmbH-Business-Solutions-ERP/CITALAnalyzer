@@ -4,7 +4,7 @@
     {
       "id": "CI0000",
       "action": "Warning",
-      "justification": "Project structure is not following official conventions (Azure DevOps)."
+      "justification": "Project structure is not following official conventions."
     },
     {
       "id": "CI0001",
