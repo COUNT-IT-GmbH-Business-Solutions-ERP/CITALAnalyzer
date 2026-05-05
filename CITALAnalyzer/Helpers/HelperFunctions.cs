@@ -3,20 +3,19 @@
 namespace CountITBCALCop.Helpers;
 
 
-public class HelperFunctions
+public partial class HelperFunctions
 {
 
     public static bool ContainsWhiteSpace(string str) =>
-    Regex.IsMatch(str, "\\s+", RegexOptions.Compiled);
+    WhiteSpaceRegex().IsMatch(str);
 
     public static bool ContainsSpecialCharacters(string str) =>
-        Regex.IsMatch(str, "[^a-zA-Z0-9_]", RegexOptions.Compiled); // allows letters, digits, underscore
-
+        NonAlphanumericOrUnderscoreRegex().IsMatch(str); // allows letters, digits, underscore
+    
     public static string RemoveAlpanumericCharacters(string name)
     {
-        return Regex.Replace(name, "[^a-zA-Z0-9]", "");
+        return NonAlphaNumericalRegex().Replace(name, "");
     }
-
 
     // removes all leading uppercase letters except the last one -> First Letter of Object name
     public static string RemovePrefix(string name)
@@ -24,17 +23,44 @@ public class HelperFunctions
         if (string.IsNullOrEmpty(name))
             return name;
 
-        // match ≥3 uppercase letters at start
-        var match = Regex.Match(name, @"^([A-Z]{3,})(.*)$");
+        var match = AfterPrefixCaptureRegex().Match(name);
         if (match.Success)
         {
-            string prefix = match.Groups[1].Value;
-            string rest = match.Groups[2].Value;
-
-            return prefix[^1] + rest;
+            return match.Groups[1].Value;
         }
 
         return name;
     }
 
+    public static string GetPrefix(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            return string.Empty;
+
+        var match = PrefixCaptureRegex().Match(name);
+        if (match.Success)
+            return match.Groups[1].Value;
+
+        return string.Empty;
+    }
+
+    public static bool HasPrefix(string name) =>
+        !string.IsNullOrEmpty(GetPrefix(name));
+
+    [GeneratedRegex("[^a-zA-Z0-9]", RegexOptions.Compiled)]
+    private static partial Regex NonAlphaNumericalRegex();
+
+    [GeneratedRegex("[^a-zA-Z0-9_]", RegexOptions.Compiled)]
+    private static partial Regex NonAlphanumericOrUnderscoreRegex();
+
+    [GeneratedRegex("\\s+", RegexOptions.Compiled)]
+    private static partial Regex WhiteSpaceRegex();
+
+    // ^[A-Z0-9]{3,} = from the start match ≥3 uppercase letters or Numbers at start
+    // ([A-Z].+) = match 1 uppercase Letter and everything else
+    [GeneratedRegex(@"^[A-Z0-9]{3,}([A-Z].+)", RegexOptions.Compiled)]
+    private static partial Regex AfterPrefixCaptureRegex();
+
+    [GeneratedRegex(@"^([A-Z0-9]{3,})[A-Z].+", RegexOptions.Compiled)]
+    private static partial Regex PrefixCaptureRegex();
 }

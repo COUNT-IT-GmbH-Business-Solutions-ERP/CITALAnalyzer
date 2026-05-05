@@ -4,14 +4,24 @@ namespace CountITBCALCop;
 
 public static class DiagnosticDescriptors
 {
-    public static readonly DiagnosticDescriptor Rule0000CheckProjectStructureAzureDevOps = new(
+    public static readonly DiagnosticDescriptor Rule0000CheckProjectStructure = new(
         id: CountITBCALCopAnalyzers.AnalyzerPrefix + "0000",
-        title: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureAzureDevOpsTitle"),
-        messageFormat: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureAzureDevOpsFormat"),
+        title: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureTitle"),
+        messageFormat: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureFormat"),
         category: "Design",
         defaultSeverity: DiagnosticSeverity.Warning,
         isEnabledByDefault: true,
-        description: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureAzureDevOpsDescription"),
+        description: CountITBCALCopAnalyzers.GetLocalizableString("Rule0000CheckProjectStructureDescription"),
+        helpLinkUri: "");
+
+    public static readonly DiagnosticDescriptor Rule0001VariableNamesOnlyContainPrefixIfNecessary = new(
+        id: CountITBCALCopAnalyzers.AnalyzerPrefix + "0001",
+        title: CountITBCALCopAnalyzers.GetLocalizableString("Rule0001VariableNamesOnlyContainPrefixIfNecessaryTitle"),
+        messageFormat: CountITBCALCopAnalyzers.GetLocalizableString("Rule0001VariableNamesOnlyContainPrefixIfNecessaryFormat"),
+        category: "Design",
+        defaultSeverity: DiagnosticSeverity.Warning,
+        isEnabledByDefault: true,
+        description: CountITBCALCopAnalyzers.GetLocalizableString("Rule0001VariableNamesOnlyContainPrefixIfNecessaryDescription"),
         helpLinkUri: "");
 
     public static readonly DiagnosticDescriptor Rule0002CheckForMissingCaptions = new(
