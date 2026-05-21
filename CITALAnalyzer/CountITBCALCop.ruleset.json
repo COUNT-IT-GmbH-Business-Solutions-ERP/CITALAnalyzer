@@ -54,7 +54,7 @@
     {
       "id": "CI0010",
       "action": "Warning",
-      "justification": "Call by reference may only be used if the variable is modified within the procedure."
+      "justification": "Call by reference may only be used if the variable is modified within the procedure. Escape this rule by making a comment including the name of the parameter and the reason for using call by reference for this case (e.g. filter/filtered)."
     },
     {
       "id": "CI0011",
